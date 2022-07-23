@@ -14,4 +14,10 @@ public interface RoleService
     void updateRole(Role role);
 
     void removeRole(List<Integer> roleIdList);
+
+    List<Role> getUnAssignRoleList(Integer adminId);
+
+    List<Role> getAssignRoleList(Integer adminId);
+
+    void saveAdminRoleRelationship(Integer adminId, List<Integer> roleList);
 }

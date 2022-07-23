@@ -18,7 +18,7 @@ function initZtree() {
         dataType: 'json',
         success: function (response) {
             if (response.result === 'SUCCESS') {
-                layer.msg("ztree初始化成功");
+                // layer.msg("ztree初始化成功");
                 var zNodes = response.data;
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             } else {

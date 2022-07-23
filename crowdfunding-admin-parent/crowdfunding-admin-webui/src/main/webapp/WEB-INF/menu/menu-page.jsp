@@ -56,7 +56,7 @@
         });
         // ============修改菜单============
         $('#treeDemo').on('click', '.editBtn', function () {
-            layer.msg('修改菜单');
+            // layer.msg('修改菜单');
             window.id = this.id.slice(this.id.lastIndexOf('_') + 1);
             // var tId = $(this).parent().attr('id').split('_btnGrp')[0];
             // var menu = $.fn.zTree.getZTreeObj("treeDemo").getNodeByTId(tId);
@@ -126,7 +126,7 @@
                     layer.msg(response.status + ': ' + response.statusText);
                 }
             });
-            $('#menuEditModal').modal('hide');
+            $('#menuRemoveModal').modal('hide');
         });
     });
 </script>

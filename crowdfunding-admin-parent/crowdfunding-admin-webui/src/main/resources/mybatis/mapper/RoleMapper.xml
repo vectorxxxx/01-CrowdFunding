@@ -66,6 +66,19 @@
   <sql id="Base_Column_List" >
     id, name
   </sql>
+  <select id="selectUnAssignRoleByAdminId" resultMap="BaseResultMap">
+    select id,name from t_role where id not in (select role_id from inner_admin_role where admin_id=#{adminId})
+  </select>
+  <select id="selectAssignRoleByAdminId" resultMap="BaseResultMap">
+    select id,name from t_role where id in (select role_id from inner_admin_role where admin_id=#{adminId})
+  </select>
+  <delete id="deleteAdminRoleByAdminId" parameterType="java.lang.Integer" >
+    delete from inner_admin_role where admin_id = #{adminId}
+  </delete>
+  <insert id="insertAdminRole">
+    insert into inner_admin_role (admin_id, role_id) values
+    <foreach collection="roleIdList" item="roleId" separator=",">(#{adminId}, #{roleId})</foreach>
+  </insert>
   <select id="selectByKeyword" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

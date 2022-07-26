@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <%@include file="/WEB-INF/include-head.jsp" %>
+<link rel="stylesheet" href="ztree/zTreeStyle.css"/>
+<script type="text/javascript" src="ztree/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript" src="crowd/my-role.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -153,6 +155,44 @@
             var checked = $('#roleTbody [type=checkbox]').not(':checked').length === 0;
             $('th [type=checkbox]').prop("checked", checked);
         });
+        // ============授权============
+        $('#roleTbody').on('click', '.checkBtn', function () {
+            window.roleId = this.id.slice(this.id.indexOf('_') + 1);
+            $('#roleAssignModal').modal('show');
+            generateAuthTree();
+        });
+        $('#roleAssignBtn').on('click', function () {
+            var treeObj = $.fn.zTree.getZTreeObj("roleAuthTree");
+            var nodes = treeObj.getCheckedNodes();
+            var authIdList = [];
+            for (let i = 0; i < nodes.length; i++) {
+                authIdList.push(nodes[i].id);
+            }
+
+            var data = {
+                roleId: [window.roleId],
+                authIdList: authIdList
+            };
+            $.ajax({
+                url: 'assign/do/assign/auth.json',
+                type: 'post',
+                data: JSON.stringify(data),
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (response){
+                    if (response.result !== 'SUCCESS') {
+                        layer.msg('执行分配失败！' + resultEntity.result + "：" + resultEntity.message);
+                        return;
+                    }
+                    layer.msg('执行分配成功！');
+                    $('#roleAssignModal').modal('hide');
+                },
+                error: function (response) {
+                    layer.msg('执行分配失败！' + response.status + "：" + response.statusText);
+                }
+            });
+            $('#roleAssignModal').modal('hide');
+        })
     });
 </script>
 <body>
@@ -214,5 +254,6 @@
 <%@include file="/WEB-INF/role/modal-role-add.jsp" %>
 <%@include file="/WEB-INF/role/modal-role-edit.jsp" %>
 <%@include file="/WEB-INF/role/modal-role-remove.jsp" %>
+<%@include file="/WEB-INF/role/modal-role-assign-auth.jsp" %>
 </body>
 </html>

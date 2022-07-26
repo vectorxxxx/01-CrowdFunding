@@ -49,7 +49,7 @@ function fillInForm(pageInfo) {
         var indexTd = '<td>' + (i + 1) + '</td>';
         var checkboxTd = '<td><input type="checkbox"/></td>';
         var nameTd = '<td>' + name + '</td>';
-        var checkBtn = '<button type="button" class="btn btn-success btn-xs"><i class="glyphicon glyphicon-check"></i></button> ';
+        var checkBtn = '<button id="checkBtn_' + id + '" type="button" class="btn btn-success btn-xs checkBtn"><i class="glyphicon glyphicon-check"></i></button> ';
         var pencilBtn = '<button id="' + id + '" type="button" class="btn btn-primary btn-xs pencilBtn"><i class="glyphicon glyphicon-pencil"></i></button> ';
         var removeBtn = '<button type="button" class="btn btn-danger btn-xs removeBtn"><i class="glyphicon glyphicon-remove"></i></button>';
         var btnTd = '<td>' + checkBtn + pencilBtn + removeBtn + '</td>';
@@ -95,4 +95,71 @@ function removeRole(nameArr, idArr) {
     window.roleIdArr = idArr;
     $('#roleNameDiv').html(nameArr.join('<br/>'));
     $('#roleRemoveModal').modal('show');
+}
+
+// ============初始化ztree============
+var setting = {
+    data: {
+        key: {
+            name: "title"
+        },
+        simpleData: {
+            enable: true,
+            pIdKey: "categoryId"
+        }
+    },
+    check: {
+        enable: true
+    }
+};
+function generateAuthTree(){
+    initAuthTree();
+    fillAuthTree();
+}
+function initAuthTree() {
+    var response = $.ajax({
+        url: 'assign/get/all/auth.json',
+        type: 'post',
+        dataType: 'json',
+        async: false
+    });
+    if(response.status !== 200) {
+        layer.msg(response.status + "：" + response.statusText);
+        return;
+    }
+    var resultEntity = response.responseJSON;
+    if (resultEntity.result !== 'SUCCESS') {
+        layer.msg(resultEntity.result + "：" + resultEntity.message);
+    }
+    // 初始化
+    var zNodes = resultEntity.data;
+    $.fn.zTree.init($("#roleAuthTree"), setting, zNodes);
+}
+function fillAuthTree(){
+    // 默认展开
+    var treeObj = $.fn.zTree.getZTreeObj("roleAuthTree");
+    treeObj.expandAll(true);
+    // 勾选
+    var response = $.ajax({
+        url: 'assign/get/auth/id/by/role/id.json',
+        type: 'post',
+        async: false,
+        dataType: 'json',
+        data: {
+            roleId: window.roleId
+        }
+    });
+    if(response.status !== 200) {
+        layer.msg(response.status + "：" + response.statusText);
+        return;
+    }
+    var resultEntity = response.responseJSON;
+    if (resultEntity.result !== 'SUCCESS') {
+        layer.msg(resultEntity.result + "：" + resultEntity.message);
+    }
+    var authIdList = resultEntity.data;
+    for (let i = 0; i < authIdList.length; i++) {
+        let node = treeObj.getNodeByParam("id", authIdList[i], null);
+        treeObj.checkNode(node, true, false);
+    }
 }

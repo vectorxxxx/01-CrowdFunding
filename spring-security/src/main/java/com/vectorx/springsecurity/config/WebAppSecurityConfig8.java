@@ -1,5 +1,8 @@
 package com.vectorx.springsecurity.config;
 
+import com.vectorx.springsecurity.service.AppUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,22 +10,36 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 /**
- * @Description 6、自定义403页面
+ * @Description 8、记住我——数据库版
  * @Author VectorX
  * @Date 2022/7/28 22:23
  * @Version V1.0
  **/
 //@Configuration
 //@EnableWebSecurity
-public class WebAppSecurityConfig6 extends WebSecurityConfigurerAdapter
+public class WebAppSecurityConfig8 extends WebSecurityConfigurerAdapter
 {
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean("jdbcTokenRepository")
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        //jdbcTokenRepository.setCreateTableOnStartup(true);
+        return jdbcTokenRepository;
+    }
+
     @Override
     protected void configure(HttpSecurity security) throws Exception {
         security.authorizeRequests()
@@ -48,8 +65,7 @@ public class WebAppSecurityConfig6 extends WebSecurityConfigurerAdapter
                 .logoutUrl("/do/logout.html")
                 .logoutSuccessUrl("/index.jsp")
                 .and()
-                .exceptionHandling()                        // 开启异常处理
-                //.accessDeniedPage("/to/no/auth/page.html")  // 访问被拒绝时前往的页面
+                .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler()
                 {
                     @Override
@@ -60,6 +76,9 @@ public class WebAppSecurityConfig6 extends WebSecurityConfigurerAdapter
                                 .forward(httpServletRequest, httpServletResponse);
                     }
                 })
+                .and()
+                .rememberMe()
+                //.tokenRepository(persistentTokenRepository()) // 启用令牌仓库
         ;
     }
 

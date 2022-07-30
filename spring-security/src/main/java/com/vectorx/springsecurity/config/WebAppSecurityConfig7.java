@@ -1,6 +1,5 @@
 package com.vectorx.springsecurity.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,25 +11,20 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 
 /**
- * @Description 6、自定义403页面
+ * @Description 7、记住我——内存版
  * @Author VectorX
  * @Date 2022/7/28 22:23
  * @Version V1.0
  **/
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class WebAppSecurityConfig7 extends WebSecurityConfigurerAdapter
 {
-    @Autowired
-    private DataSource dataSource;
-
     @Override
     protected void configure(HttpSecurity security) throws Exception {
-        System.out.println(dataSource.getConnection());
         security.authorizeRequests()
                 .antMatchers("/layui/**", "/index.jsp")
                 .permitAll()
@@ -54,8 +48,7 @@ public class WebAppSecurityConfig7 extends WebSecurityConfigurerAdapter
                 .logoutUrl("/do/logout.html")
                 .logoutSuccessUrl("/index.jsp")
                 .and()
-                .exceptionHandling()                        // 异常处理器
-                //.accessDeniedPage("/to/no/auth/page.html")  // 访问被拒绝是前往的页面
+                .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler()
                 {
                     @Override
@@ -66,6 +59,8 @@ public class WebAppSecurityConfig7 extends WebSecurityConfigurerAdapter
                                 .forward(httpServletRequest, httpServletResponse);
                     }
                 })
+                .and()
+                .rememberMe() // 记住我
         ;
     }
 

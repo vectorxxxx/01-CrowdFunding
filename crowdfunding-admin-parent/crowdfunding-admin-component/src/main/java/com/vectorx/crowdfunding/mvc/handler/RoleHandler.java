@@ -7,6 +7,7 @@ import com.vectorx.crowdfunding.util.ResultEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ public class RoleHandler
     private static final Logger logger = LoggerFactory.getLogger(RoleHandler.class);
 
     // ========================查询相关========================
+    @PreAuthorize("hasRole('部长')")
     @RequestMapping("/get/page/info.json")
     public ResultEntity<PageInfo<Role>> getPageInfo(
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
@@ -66,6 +68,7 @@ public class RoleHandler
     }
 
     // ========================删除相关========================
+    @PreAuthorize("hasAuthority('role:delete')")
     @RequestMapping("/remove.json")
     //public ResultEntity<Object> removeRole(@RequestParam("ids") String roleIds) {
     public ResultEntity<Object> removeRole(@RequestBody List<Integer> roleIdList) {

@@ -5,17 +5,26 @@ import com.vectorx.crowdfunding.constant.CrowdConstant;
 import com.vectorx.crowdfunding.entity.Admin;
 import com.vectorx.crowdfunding.exception.DeleteException;
 import com.vectorx.crowdfunding.service.api.AdminService;
+import com.vectorx.crowdfunding.util.ResultEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminHandler
 {
+    private Logger logger = LoggerFactory.getLogger(AdminHandler.class);
+
     @Autowired
     private AdminService adminService;
 
@@ -29,6 +38,7 @@ public class AdminHandler
         return "admin/admin-login";
     }
 
+    @Deprecated
     @PostMapping("/do/login.html")
     public String login(@RequestParam(value = "loginAcct", required = false) String loginAcct,
             @RequestParam(value = "userPswd", required = false) String userPswd, HttpSession session) {
@@ -74,7 +84,8 @@ public class AdminHandler
     }
 
     // ========================新增相关========================
-    @GetMapping("/add.html")
+    @PreAuthorize("hasAuthority('user:save')")
+    @PostMapping("/add.html")
     public String addAdmin(Admin admin) {
         adminService.saveAdmin(admin);
         return "redirect:/admin/get/page.html?pageNum=" + Integer.MAX_VALUE;
@@ -95,4 +106,23 @@ public class AdminHandler
         return "redirect:/admin/get/page.html?pageNum=" + pageNum + "&keyword=" + keyword;
     }
 
+    // ========================其他========================
+    @PostAuthorize("returnObject.data.loginAcct == principal.username")
+    @ResponseBody
+    @RequestMapping("/test/post/authorize.json")
+    public ResultEntity<Object> getAdminById(){
+        Admin admin = new Admin();
+        admin.setLoginAcct("adminOp");
+        return ResultEntity.success(admin);
+    }
+
+    @PreFilter(value = "filterObject % 2 == 0")
+    @ResponseBody
+    @RequestMapping("/test/pre/filter.json")
+    public ResultEntity<List<Integer>> saveList(@RequestBody List<Integer> valueList) {
+        for (Integer integer : valueList) {
+            logger.info(String.valueOf(integer));
+        }
+        return ResultEntity.success(valueList);
+    }
 }

@@ -9,6 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @description 登录拦截器
+ * @author VectorX
+ * @date 2022/8/5 22:01
+ * @version V1.0
+ **/
+@Deprecated
 public class LoginInterceptor extends HandlerInterceptorAdapter
 {
     @Override

@@ -18,4 +18,6 @@ public interface AdminService
     void saveAdmin(Admin admin);
 
     void removeAdminById(Integer adminId);
+
+    Admin getAdminByLoginAcct(String loginAcct);
 }

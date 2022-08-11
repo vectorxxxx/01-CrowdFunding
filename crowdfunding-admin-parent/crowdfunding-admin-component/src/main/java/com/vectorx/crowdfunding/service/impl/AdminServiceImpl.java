@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +28,9 @@ public class AdminServiceImpl implements AdminService
 {
     @Autowired
     private AdminMapper adminMapper;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     private Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 
@@ -82,7 +86,8 @@ public class AdminServiceImpl implements AdminService
     }
 
     private void addAdmin(Admin admin) {
-        String userPswd = CrowdUtil.md5(admin.getUserPswd());
+        //String userPswd = CrowdUtil.md5(admin.getUserPswd());
+        String userPswd = passwordEncoder.encode(admin.getUserPswd());
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         admin.setUserPswd(userPswd);
         admin.setCreateTime(createTime);
@@ -112,5 +117,14 @@ public class AdminServiceImpl implements AdminService
     @Override
     public void removeAdminById(Integer adminId) {
         adminMapper.deleteByPrimaryKey(adminId);
+    }
+
+    @Override
+    public Admin getAdminByLoginAcct(String loginAcct) {
+        AdminExample example = new AdminExample();
+        AdminExample.Criteria criteria = example.createCriteria();
+        criteria.andLoginAcctEqualTo(loginAcct);
+        List<Admin> adminList = adminMapper.selectByExample(example);
+        return adminList.get(0);
     }
 }

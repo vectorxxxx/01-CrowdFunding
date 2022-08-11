@@ -8,6 +8,7 @@ public class CrowdConstant
     public static final String MSG_STRING_INVALIDATE = "非法字符串！";
     public static final String MSG_DATA_ERROR = "数据异常！";
     public static final String MSG_DELETE_FORBIDDEN = "不允许删除当前用户！";
+    public static final String MSG_ACCESS_DENIED = "没有权限！";
 
     public static final String ATTR_NAME_EXCEPTION = "exception";
     public static final String ATTR_NAME_ADMIN_LOGIN = "adminLogin";

@@ -38,4 +38,6 @@ public interface RoleMapper {
     void deleteAdminRoleByAdminId(Integer adminId);
 
     void insertAdminRole(@Param("adminId") Integer adminId, @Param("roleIdList") List<Integer> roleIdList);
+
+    List<String> selectRoleNameList(Integer adminId);
 }

@@ -32,4 +32,9 @@ public class AuthServiceImpl implements AuthService
             authMapper.insertRoleAuth(roleId, authIdList);
         }
     }
+
+    @Override
+    public List<String> getAuthNameByAdminId(Integer adminId) {
+        return authMapper.selectAuthNameByAdminId(adminId);
+    }
 }

@@ -60,11 +60,18 @@ public class CrowdExceptionResolver
         return commonResolve("error", exception, request, response);
     }
 
+    // ========================其他异常========================
+    @ExceptionHandler(Exception.class)
+    public ModelAndView resolveAccessForbiddenException(Exception exception, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        return commonResolve("error", exception, request, response);
+    }
+
     private ModelAndView commonResolve(String viewName, Exception exception, HttpServletRequest request,
             HttpServletResponse response) throws IOException {
         // Ajax请求
         if(CrowdUtil.judgeAjax(request)){
-            ResultEntity<Object> failed = ResultEntity.failed(exception.getCause().getMessage());
+            ResultEntity<Object> failed = ResultEntity.failed(exception.getMessage());
             Gson gson = new Gson();
             String json = gson.toJson(failed);
             response.getWriter().write(json);

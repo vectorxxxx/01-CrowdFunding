@@ -1,0 +1,16 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: vectorx-zuul-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:5000/eureka/
+zuul:
+  ignored-services: '*'
+  prefix: /vectorx
+  routes:
+    vectorx-consumer-feign:
+      service-url: vectorx-consumer-feign
+      path: /zuul-emp/**

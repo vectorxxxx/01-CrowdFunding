@@ -1,0 +1,26 @@
+server:
+  port: 2000
+spring:
+  application:
+    name: vectorx-crowdfunding-mysql
+  # 数据源
+  datasource:
+    name: crowdfunding
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/crowdfunding?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+# mybatis
+mybatis:
+  mapper-locations: classpath*:/mybatis/mapper/*Mapper.xml
+# 日志
+logging:
+  level:
+    com.vectorx.crowdfunding.mapper: debug
+    com.vectorx.crowdfunding.test: debug
+

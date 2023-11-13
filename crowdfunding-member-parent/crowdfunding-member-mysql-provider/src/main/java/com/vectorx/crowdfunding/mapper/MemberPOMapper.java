@@ -3,9 +3,11 @@ package com.vectorx.crowdfunding.mapper;
 import com.vectorx.crowdfunding.entity.po.MemberPO;
 import com.vectorx.crowdfunding.entity.po.MemberPOExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface MemberPOMapper
 {
     long countByExample(MemberPOExample example);

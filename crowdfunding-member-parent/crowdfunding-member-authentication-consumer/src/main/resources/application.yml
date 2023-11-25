@@ -3,10 +3,20 @@ server:
 spring:
   application:
     name: vectorx-crowdfunding-authentication
+  # 模板引擎
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+# 注册中心
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:1000/eureka
+# 自定义配置类
+short:
+  message:
+    url: dysmsapi.aliyuncs.com
+    sign-name: 阿里云短信测试
+    template-code: SMS_154950909
+    access-key-id: LTAI5tMfi7NBnWQ8Kdcdg2Yk
+    access-key-secret: Hd6mG6aJlqbRRqsPAjxDYyVJyuozF6

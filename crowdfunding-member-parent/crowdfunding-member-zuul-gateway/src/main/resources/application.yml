@@ -1,0 +1,23 @@
+server:
+  port: 80
+spring:
+  application:
+    name: vectorx-crowdfunding-zuul
+  # Redis
+  redis:
+    host: 127.0.0.1
+    password: 123456
+# 注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+# 网关
+zuul:
+  ignored-services: "*"
+  sensitive-headers: "*"
+  routes:
+    crowdfunding-portal:
+      service-id: vectorx-crowdfunding-authentication
+      path: /**
+

@@ -1,9 +1,9 @@
-package com.vectorx.crowdfunding;
+package com.vectorx.crowdfunding.util;
 
 import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import com.vectorx.crowdfunding.entity.ResultEntity;
 
-public class CrowdUtil
+public class CrowdShortMessageUtil
 {
     public static ResultEntity<String> sendMessage(String url, String signName, String templateCode, String accessKeyId, String accessKeySecret, String phoneNum, String captcha)
             throws Exception {

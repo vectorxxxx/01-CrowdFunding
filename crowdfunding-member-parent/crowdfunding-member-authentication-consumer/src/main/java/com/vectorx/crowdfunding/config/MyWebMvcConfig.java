@@ -1,5 +1,6 @@
 package com.vectorx.crowdfunding.config;
 
+import com.vectorx.crowdfunding.entity.constant.CrowdConstant;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,8 +10,8 @@ public class MyWebMvcConfig implements WebMvcConfigurer
 {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/auth/member/to/reg/page").setViewName("member-reg");
-        registry.addViewController("/auth/member/to/login/page").setViewName("member-login");
-        registry.addViewController("/auth/member/to/center/page").setViewName("member-center");
+        registry.addViewController(CrowdConstant.TO_REGISTER_PAGE).setViewName(CrowdConstant.MEMBER_REG);
+        registry.addViewController(CrowdConstant.TO_LOGIN_PAGE).setViewName(CrowdConstant.MEMBER_LOGIN);
+        registry.addViewController(CrowdConstant.TO_CENTER_PAGE).setViewName(CrowdConstant.MEMBER_CENTER);
     }
 }

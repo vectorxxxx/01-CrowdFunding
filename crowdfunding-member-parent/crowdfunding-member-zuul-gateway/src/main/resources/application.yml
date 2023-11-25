@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: vectorx-crowdfunding-zuul
+  # SpringSession
+  session:
+    store-type: redis
   # Redis
   redis:
     host: 127.0.0.1
@@ -20,4 +23,6 @@ zuul:
     crowdfunding-portal:
       service-id: vectorx-crowdfunding-authentication
       path: /**
-
+ribbon:
+  ConnectTimeout: 10000 # 连接超时时间(ms)
+  ReadTimeout: 10000 # 通信超时时间(ms)

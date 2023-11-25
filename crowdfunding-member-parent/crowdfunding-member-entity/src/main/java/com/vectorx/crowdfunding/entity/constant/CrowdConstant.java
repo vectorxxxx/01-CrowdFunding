@@ -28,7 +28,14 @@ public class CrowdConstant
 
     public static final String REDIS_KEY_PREFIX = "REDIS_KEY_PREFIX_";
 
-    public static final String REDIRECT_TO_REGISTER_PAGE = "redirect:/auth/member/to/reg/page";
-    public static final String REDIRECT_TO_LOGIN_PAGE = "redirect:/auth/member/to/login/page";
-    public static final String REDIRECT_TO_CENTER_PAGE = "redirect:/auth/member/to/center/page";
+    public static final String MEMBER_LOGIN = "member-login";
+    public static final String MEMBER_REG = "member-reg";
+    public static final String MEMBER_CENTER = "member-center";
+    public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";
+    public static final String TO_LOGIN_PAGE = "/auth/member/to/login/page";
+    public static final String TO_CENTER_PAGE = "/auth/member/to/center/page";
+    public static final String DO_REGISTER = "/auth/member/do/register";
+    public static final String DO_LOGIN = "/auth/member/do/login";
+    public static final String DO_LOGIN_OUT = "/auth/member/do/loginout";
+    public static final String SEND_SHORT_MESSAGE = "/auth/member/send/short/message.json";
 }

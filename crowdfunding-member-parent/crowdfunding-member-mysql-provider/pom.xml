@@ -18,6 +18,28 @@
     </properties>
 
     <dependencies>
+        <!-- 个性化工程包 -->
+        <dependency>
+            <groupId>com.vectorx.crowdfunding</groupId>
+            <artifactId>crowdfunding-member-util</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- web环境（为了能对外暴露接口） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- SpringBoot 测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- eureka客户端依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
         <!-- MyBatis依赖 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -32,32 +54,6 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-        </dependency>
-        <!-- SpringBoot 测试 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- web环境（为了能对外暴露接口） -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!-- eureka客户端依赖 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.vectorx.crowdfunding</groupId>
-            <artifactId>crowdfunding-member-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vectorx.crowdfunding</groupId>
-            <artifactId>crowdfunding-member-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

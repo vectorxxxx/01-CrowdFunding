@@ -1,4 +1,4 @@
-package com.vectorx.crowdfunding.entity;
+package com.vectorx.crowdfunding.properties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

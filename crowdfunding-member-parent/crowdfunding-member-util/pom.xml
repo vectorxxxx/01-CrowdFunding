@@ -18,6 +18,19 @@
     </properties>
 
     <dependencies>
+        <!-- 个性化工程包 -->
+        <dependency>
+            <groupId>com.vectorx.crowdfunding</groupId>
+            <artifactId>crowdfunding-member-entity</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- SpringBoot 测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- SMS 短信服务 -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>dysmsapi20170525</artifactId>
@@ -38,11 +51,16 @@
             <artifactId>tea-util</artifactId>
             <version>0.2.21</version>
         </dependency>
+        <!-- OSS 对象存储服务 -->
         <dependency>
-            <groupId>com.vectorx.crowdfunding</groupId>
-            <artifactId>crowdfunding-member-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>com.aliyun</groupId>
+            <artifactId>sts20150401</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.8.0</version>
         </dependency>
     </dependencies>
 </project>

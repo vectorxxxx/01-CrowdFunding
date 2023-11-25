@@ -1,0 +1,30 @@
+server:
+  port: 5000
+spring:
+  application:
+    name: vectorx-crowdfunding-project
+  # 模板引擎
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  # SpringSession
+  session:
+    store-type: redis
+  # Redis
+  redis:
+    host: 127.0.0.1
+    password: 123456
+# 注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+# 自定义 OSS 对象存储服务配置
+aliyun:
+  oss:
+    endpoint: https://oss-cn-shanghai.aliyuncs.com
+    access-key-id: STS.NUyVu59yx3NC5RNpaQPEtFuKY
+    access-key-secret: HsB9fG4NidEaHYMtYh9cmEmDQD2v6uprKAYTkw8ZFRui
+    security-token: CAIShwJ1q6Ft5B2yfSjIr5bMHc+B1KZZhIyoN3T/lGEEXMpYqbDguzz2IHhMfHNoAu4evvg2nW9R7fcYlr14UZhaSULZa8dx6JsS7w6qf43bq5QpS3bQIMT3d1KIAjvXgeXwAYygPv6/F96pb1fb7FwRpZLxaTSlWXG8LJSNkuQJR98LXw6+H1EkbZUsUWkEksIBMmbLPvuAKwPjhnGqbHBloQ1hk2hym8/dq4++kkOO1wKql7ZM/92pcsP6NJBWUc0hA4vv7otfbbHc1SNc0R9O+ZptgbZMkTW95YnFWwMJuEveY7aNq4I2d14jfNQxAalboPbhk/F5vOOWiYn81xFXLfHS1NJH7BhpqxqAAaKHsrxoXD99KDVdYqbmbmXUZROPZPsXk0xTEDsWdP+s+EolQMU5ismmJyYWPNRGghSjWnzZASXsHwAxX4o+HJC0E2d7pSkLvBlq4QMzsyOru/YiIcnB03Qb8eGkw7W1fGz6uK+XV2YS/OaXb4fJu5+U1B+2zBWK9j/UpnhVnVzIIAA=
+    bucket-name: crowdfunding-vectorx
+    bucket-domain: https://crowdfunding-vectorx.oss-cn-shanghai.aliyuncs.com

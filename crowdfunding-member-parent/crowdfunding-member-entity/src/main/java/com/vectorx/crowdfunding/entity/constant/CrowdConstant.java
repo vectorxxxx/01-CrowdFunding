@@ -2,6 +2,7 @@ package com.vectorx.crowdfunding.entity.constant;
 
 public class CrowdConstant
 {
+    // 消息内容
     public static final String MSG_LOGIN_INVALID = "账户不存在！";
     public static final String MSG_LOGIN_FAILED = "账号密码有误！";
     public static final String MSG_LOGIN_ALREADY_IN_USE = "账号已被使用！";
@@ -19,6 +20,7 @@ public class CrowdConstant
     public static final String MSG_PHONE_NUM_NOT_NULL = "手机号不能为空！";
     public static final String MSG_CAPTCHA_NOT_NULL = "验证码不能为空！";
 
+    // 属性名称
     public static final String ATTR_NAME_EXCEPTION = "exception";
     public static final String ATTR_NAME_ADMIN_LOGIN = "adminLogin";
     public static final String ATTR_NAME_PAGE_INFO = "pageInfo";
@@ -28,14 +30,21 @@ public class CrowdConstant
 
     public static final String REDIS_KEY_PREFIX = "REDIS_KEY_PREFIX_";
 
+    // 视图名称
     public static final String MEMBER_LOGIN = "member-login";
     public static final String MEMBER_REG = "member-reg";
     public static final String MEMBER_CENTER = "member-center";
+    public static final String MEMBER_CROWD = "member-crowd";
+    // 跳转页面
     public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";
     public static final String TO_LOGIN_PAGE = "/auth/member/to/login/page";
     public static final String TO_CENTER_PAGE = "/auth/member/to/center/page";
+    public static final String TO_MY_CROWD_PAGE = "/auth/member/to/my/crowd/page";
+    // 请求处理
     public static final String DO_REGISTER = "/auth/member/do/register";
     public static final String DO_LOGIN = "/auth/member/do/login";
     public static final String DO_LOGIN_OUT = "/auth/member/do/loginout";
     public static final String SEND_SHORT_MESSAGE = "/auth/member/send/short/message.json";
+
+    public static final String REDIRECT_HTTP_LOCALHOST = "redirect:http://localhost";
 }

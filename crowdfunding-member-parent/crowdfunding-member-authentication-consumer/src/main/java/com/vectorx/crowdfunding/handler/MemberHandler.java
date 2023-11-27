@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class MemberHandler
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(MemberHandler.class);
-    public static final String HTTP = "http://";
 
     @Autowired
     private ShortMessageProperties shortMessageProperties;
@@ -42,13 +41,13 @@ public class MemberHandler
     private MySQLRemoteService mySQLRemoteService;
 
     @RequestMapping(CrowdConstant.DO_LOGIN_OUT)
-    public String doLoginout(HttpServletRequest request) {
-        request.getSession().invalidate();
-        return "redirect:" + HTTP + request.getRemoteHost() + CrowdConstant.TO_LOGIN_PAGE;
+    public String doLoginout(HttpSession session) {
+        session.invalidate();
+        return CrowdConstant.REDIRECT_HTTP_LOCALHOST + CrowdConstant.TO_LOGIN_PAGE;
     }
 
     @RequestMapping(CrowdConstant.DO_LOGIN)
-    public String doLogin(MemberLoginVO memberLoginVO, ModelMap modelMap, HttpServletRequest request) {
+    public String doLogin(MemberLoginVO memberLoginVO, ModelMap modelMap, HttpSession session) {
         // 账号为空
         final String loginacct = memberLoginVO.getLoginacct();
         if (loginacct == null || "".equals(loginacct)) {
@@ -80,15 +79,15 @@ public class MemberHandler
             modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_LOGIN_FAILED);
             return CrowdConstant.MEMBER_LOGIN;
         }
-        
+
         // 登录成功将 MemberCenterVO 存入 Session 域
         MemberCenterVO memberCenterVO = new MemberCenterVO(memberPO.getId(), memberPO.getLoginacct(), memberPO.getUsername(), memberPO.getEmail());
-        request.getSession().setAttribute(CrowdConstant.ATTR_NAME_MEMBER, memberCenterVO);
-        return "redirect:" + HTTP + request.getRemoteHost() + CrowdConstant.TO_CENTER_PAGE;
+        session.setAttribute(CrowdConstant.ATTR_NAME_MEMBER, memberCenterVO);
+        return CrowdConstant.REDIRECT_HTTP_LOCALHOST + CrowdConstant.TO_CENTER_PAGE;
     }
 
     @RequestMapping(CrowdConstant.DO_REGISTER)
-    public String doRegister(MemberRegisterVO memberRegisterVO, ModelMap modelMap, HttpServletRequest request) {
+    public String doRegister(MemberRegisterVO memberRegisterVO, ModelMap modelMap) {
         // ============校验输入============
         // 登录账号为空
         final String loginacct = memberRegisterVO.getLoginacct();
@@ -161,7 +160,7 @@ public class MemberHandler
 
         // ============删除Redis缓存============
         redisRemoteService.removeRedisKeyRemote(captchaRedisKey);
-        return "redirect:" + HTTP + request.getRemoteHost() + CrowdConstant.TO_LOGIN_PAGE;
+        return CrowdConstant.REDIRECT_HTTP_LOCALHOST + CrowdConstant.TO_LOGIN_PAGE;
     }
 
     @ResponseBody

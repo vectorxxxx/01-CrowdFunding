@@ -23,6 +23,9 @@ zuul:
     crowdfunding-portal:
       service-id: vectorx-crowdfunding-authentication
       path: /**
+    crowdfunding-project:
+      service-id: vectorx-crowdfunding-project
+      path: /project/**
 ribbon:
   ConnectTimeout: 10000 # 连接超时时间(ms)
   ReadTimeout: 10000 # 通信超时时间(ms)

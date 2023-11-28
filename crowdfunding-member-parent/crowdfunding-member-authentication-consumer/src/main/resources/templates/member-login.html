@@ -16,7 +16,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <div><a class="navbar-brand" href="index.html" style="font-size:32px;">尚筹网-创意产品众筹平台</a></div>
+            <div><a class="navbar-brand" th:href="@{/}" style="font-size:32px;">尚筹网-创意产品众筹平台</a></div>
         </div>
     </div>
 </nav>
@@ -28,11 +28,11 @@
         <p th:text="${message}">这里显示登录失败的提示消息</p>
         <p th:text="${session.message}">这里显示放行失败的提示消息</p>
         <div class="form-group has-success has-feedback">
-            <input type="text" name="loginacct" class="form-control" id="inputSuccess1" placeholder="请输入登录账号" autofocus>
+            <input type="text" name="loginacct" class="form-control" id="inputSuccess1" placeholder="请输入登录账号" autofocus th:value="test">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-success has-feedback">
-            <input type="text" name="userpswd" class="form-control" id="inputSuccess2" placeholder="请输入登录密码" style="margin-top:10px;">
+            <input type="text" name="userpswd" class="form-control" id="inputSuccess2" placeholder="请输入登录密码" style="margin-top:10px;" th:value="test">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="checkbox" style="text-align:right;"><a href="reg.html" th:href="@{/auth/member/to/reg/page}">我要注册</a></div>

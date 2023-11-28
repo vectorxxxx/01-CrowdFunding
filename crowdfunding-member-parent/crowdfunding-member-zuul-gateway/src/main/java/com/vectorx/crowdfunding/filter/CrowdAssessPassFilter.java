@@ -7,6 +7,7 @@ import com.vectorx.crowdfunding.entity.constant.CrowdConstant;
 import com.vectorx.crowdfunding.util.CrowdAssessPassUtil;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -46,8 +47,14 @@ public class CrowdAssessPassFilter extends ZuulFilter
      */
     @Override
     public boolean shouldFilter() {
-        final String servletPath = RequestContext.getCurrentContext().getRequest().getServletPath();
+        final HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
+        final String servletPath = request.getServletPath();
         final boolean whetherAssessPass = CrowdAssessPassUtil.judgeWhetherAssessPass(servletPath);
+        // 如果是放行通过的页面资源，应该清理下message
+        if (whetherAssessPass) {
+            final HttpSession session = request.getSession();
+            session.removeAttribute(CrowdConstant.ATTR_NAME_MESSAGE);
+        }
         return !whetherAssessPass;
     }
 

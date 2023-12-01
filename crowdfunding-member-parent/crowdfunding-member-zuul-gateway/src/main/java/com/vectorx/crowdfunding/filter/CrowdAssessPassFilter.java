@@ -49,12 +49,12 @@ public class CrowdAssessPassFilter extends ZuulFilter
     public boolean shouldFilter() {
         final HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
         final String servletPath = request.getServletPath();
-        final boolean whetherAssessPass = CrowdAssessPassUtil.judgeWhetherAssessPass(servletPath);
         // 如果是放行通过的页面资源，应该清理下message
-        if (whetherAssessPass) {
+        if (CrowdAssessPassUtil.judgeWhetherPageResource(servletPath)) {
             final HttpSession session = request.getSession();
             session.removeAttribute(CrowdConstant.ATTR_NAME_MESSAGE);
         }
+        final boolean whetherAssessPass = CrowdAssessPassUtil.judgeWhetherAssessPass(servletPath);
         return !whetherAssessPass;
     }
 

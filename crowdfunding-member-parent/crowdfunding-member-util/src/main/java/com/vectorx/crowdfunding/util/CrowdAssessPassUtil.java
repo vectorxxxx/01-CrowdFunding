@@ -46,6 +46,16 @@ public class CrowdAssessPassUtil
     }
 
     /**
+     * 判断请求是否为页面资源
+     *
+     * @param servletPath  请求路径
+     * @return boolean
+     */
+    public static boolean judgeWhetherPageResource(String servletPath) {
+        return isAssessPassResource(PAGE_RESOURCE, servletPath);
+    }
+
+    /**
      * 是否访问放行的资源
      *
      * @param assessPassResourceSet 允许访问放行的资源集合

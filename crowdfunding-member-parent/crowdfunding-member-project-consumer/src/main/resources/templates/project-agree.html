@@ -355,7 +355,7 @@
                         </div>
                     </div>
                     <div class="panel-footer" style="text-align:center;">
-                        <button type="button" class="btn  btn-warning btn-lg" onclick="window.location.href='start-step-1.html'">阅读并同意协议</button>
+                        <button id="agreeProtocolBtn" type="button" class="btn  btn-warning btn-lg">阅读并同意协议</button>
                     </div>
                 </div>
             </div>
@@ -390,6 +390,13 @@
     $('#myTab a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
+    })
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('#agreeProtocolBtn').click(function () {
+            window.location.href = "http://localhost/project/launch/project/page";
+        });
     })
 </script>
 </body>

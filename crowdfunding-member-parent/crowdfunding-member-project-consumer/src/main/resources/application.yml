@@ -23,8 +23,8 @@ eureka:
 aliyun:
   oss:
     endpoint: https://oss-cn-shanghai.aliyuncs.com
-    access-key-id: STS.NUyVu59yx3NC5RNpaQPEtFuKY
-    access-key-secret: HsB9fG4NidEaHYMtYh9cmEmDQD2v6uprKAYTkw8ZFRui
-    security-token: CAIShwJ1q6Ft5B2yfSjIr5bMHc+B1KZZhIyoN3T/lGEEXMpYqbDguzz2IHhMfHNoAu4evvg2nW9R7fcYlr14UZhaSULZa8dx6JsS7w6qf43bq5QpS3bQIMT3d1KIAjvXgeXwAYygPv6/F96pb1fb7FwRpZLxaTSlWXG8LJSNkuQJR98LXw6+H1EkbZUsUWkEksIBMmbLPvuAKwPjhnGqbHBloQ1hk2hym8/dq4++kkOO1wKql7ZM/92pcsP6NJBWUc0hA4vv7otfbbHc1SNc0R9O+ZptgbZMkTW95YnFWwMJuEveY7aNq4I2d14jfNQxAalboPbhk/F5vOOWiYn81xFXLfHS1NJH7BhpqxqAAaKHsrxoXD99KDVdYqbmbmXUZROPZPsXk0xTEDsWdP+s+EolQMU5ismmJyYWPNRGghSjWnzZASXsHwAxX4o+HJC0E2d7pSkLvBlq4QMzsyOru/YiIcnB03Qb8eGkw7W1fGz6uK+XV2YS/OaXb4fJu5+U1B+2zBWK9j/UpnhVnVzIIAA=
+    access-key-id: STS.NTfSNqgUe3Kyx5JJJcdAEznTU
+    access-key-secret: 4RYqkxmHDBuP5SFnnePKxNU1wPrjUy6nZr3giTh75stL
+    security-token: CAIShwJ1q6Ft5B2yfSjIr5fTGPTFiopEhImSehP7rko2aM5plav/tzz2IHhMfHNoAu4evvg2nW9R7fcYlr14UZhaSULZa8dx6JsS7w6qf43bq5Q+SAXCIsT3d1KIAjvXgeXwAYygPv6/F96pb1fb7FwRpZLxaTSlWXG8LJSNkuQJR98LXw6+H1EkbZUsUWkEksIBMmbLPvuAKwPjhnGqbHBloQ1hk2hym8/dq4++kkOO1wKql7ZM/92pcsP6NJBWUc0hA4vv7otfbbHc1SNc0R9O+ZptgbZMkTW95YnFWwMJuEveY7aNq4I2d14jfNQxAalboPbhk/F5vOOWiYn81xFXLfHS1NJH7BhpqxqAAX0X6U1CxuDeZfRBpAz+x5KaHrPyiFknEE5OwXRay9n5jB4FWn1VZJf2Ae7zN4I3jqrJYCkErOYpP59n2I7KnBs+ycqv64I66r4/XWAjXDK2ui4zLx5LfdfRG4rfb9xcVm/b+FLF7oP206oJ34EFqWodWAgqxTWzU9UU+/znB5N5IAA=
     bucket-name: crowdfunding-vectorx
     bucket-domain: https://crowdfunding-vectorx.oss-cn-shanghai.aliyuncs.com

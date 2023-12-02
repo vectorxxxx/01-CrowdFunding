@@ -89,3 +89,12 @@ create table t_member_confirm_info
     primary key (id)
 ) COMMENT ='发起人确认信息表';
 ```
+
+修改
+
+```sql
+alter table t_project modify project_description longtext null comment '项目描述';
+alter table t_member_launch_info modify description_detail longtext null comment '详细介绍';
+alter table t_return modify content longtext null comment '回报内容';
+alter table t_project modify money int null comment '筹集金额';
+```

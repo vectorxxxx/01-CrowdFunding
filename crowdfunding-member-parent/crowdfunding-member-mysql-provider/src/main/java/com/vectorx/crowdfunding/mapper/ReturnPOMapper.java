@@ -3,9 +3,11 @@ package com.vectorx.crowdfunding.mapper;
 import com.vectorx.crowdfunding.entity.po.ReturnPO;
 import com.vectorx.crowdfunding.entity.po.ReturnPOExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ReturnPOMapper
 {
     long countByExample(ReturnPOExample example);
@@ -29,4 +31,6 @@ public interface ReturnPOMapper
     int updateByPrimaryKeySelective(ReturnPO record);
 
     int updateByPrimaryKey(ReturnPO record);
+
+    void insertBatch(@Param("returnPOList") List<ReturnPO> returnPOList, @Param("projectId") Integer projectId);
 }

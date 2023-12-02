@@ -3,9 +3,11 @@ package com.vectorx.crowdfunding.mapper;
 import com.vectorx.crowdfunding.entity.po.ProjectPO;
 import com.vectorx.crowdfunding.entity.po.ProjectPOExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ProjectPOMapper
 {
     long countByExample(ProjectPOExample example);
@@ -29,4 +31,8 @@ public interface ProjectPOMapper
     int updateByPrimaryKeySelective(ProjectPO record);
 
     int updateByPrimaryKey(ProjectPO record);
+
+    void insertTypeRelationship(@Param("typeIdList") List<Integer> typeIdList, @Param("projectId") Integer projectId);
+
+    void insertTagRelationship(@Param("tagIdList") List<Integer> tagIdList, @Param("projectId") Integer projectId);
 }

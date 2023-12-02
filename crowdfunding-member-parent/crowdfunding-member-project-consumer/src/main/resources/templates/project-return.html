@@ -74,6 +74,22 @@
         .progress-bar-default {
             background-color: #ddd;
         }
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle !important;
+        }
+
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -133,7 +149,8 @@
     <div class="container">
         <div class="row clearfix">
             <div class="col-md-12 column">
-                <p th:text="${session.message}">这里显示回报设置失败的提示消息</p>
+                <p th:text="${message}">这里显示回报提交失败的提示消息</p>
+                <p th:text="${session.message}">这里显示田忌回报失败的提示消息</p>
                 <div class="panel panel-default">
                     <div class="panel-heading" style="text-align:center;">
                         <div class="container-fluid">
@@ -206,17 +223,17 @@
                                     </blockquote>
                                 </div>
                                 <div class="col-md-12 column">
-                                    <table class="table table-bordered" style="text-align:center;">
+                                    <table class="table table-bordered">
                                         <thead>
                                         <tr style="background-color:#ddd;">
-                                            <td>序号</td>
-                                            <td>支付金额</td>
-                                            <td>名额</td>
-                                            <td>单笔限购</td>
-                                            <td>回报内容</td>
-                                            <td>回报时间</td>
-                                            <td>运费</td>
-                                            <td>操作</td>
+                                            <th>序号</th>
+                                            <th>支付金额</th>
+                                            <th>名额</th>
+                                            <th>单笔限购</th>
+                                            <th>回报内容</th>
+                                            <th>回报时间</th>
+                                            <th>运费</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody id="returnTableBody">
@@ -233,6 +250,22 @@
                                         <!--        <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>-->
                                         <!--    </td>-->
                                         <!--</tr>-->
+                                        <th:block
+                                                th:if="${session.temp_project?.returnVOList != null and not #lists.isEmpty(session.temp_project.returnVOList)}">
+                                            <tr th:each="returnVO : ${session.temp_project.returnVOList}">
+                                                <td scope="row" th:text="${returnVOStat.index + 1}">1</td>
+                                                <td th:text="${returnVO.supportmoney}">￥1.00</td>
+                                                <td th:text="${returnVO.count}">无限制</td>
+                                                <td th:text="${returnVO.signalpurchase == 0 ? '不限购' : '限购' + returnVO.purchase}">1</td>
+                                                <td th:text="${returnVO.content}">1</td>
+                                                <td th:text="${'项目结束后的' + returnVO.returndate + '天'}">项目结束后的30天</td>
+                                                <td th:text="${returnVO.freight == 0 ? '包邮' : returnVO.freight}">包邮</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
+                                                    <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
+                                                </td>
+                                            </tr>
+                                        </th:block>
                                         </tbody>
                                     </table>
                                     <button id="addReturnBtn" type="button" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> 添加回报</button>
@@ -250,10 +283,10 @@
                                                         <label class="col-sm-2 control-label">回报类型</label>
                                                         <div class="col-sm-10">
                                                             <label class="radio-inline">
-                                                                <input type="radio" name="type" value="1" checked> 实物回报
+                                                                <input type="radio" name="type" value="0" checked> 实物回报
                                                             </label>
                                                             <label class="radio-inline">
-                                                                <input type="radio" name="type" value="2"> 虚拟物品回报
+                                                                <input type="radio" name="type" value="1"> 虚拟物品回报
                                                             </label>
                                                         </div>
                                                     </div>
@@ -281,7 +314,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">回报数量（名）</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" name="count" value="1" class="form-control" style="width:100px;display:inline">
+                                                            <input type="text" name="count" value="0" class="form-control" style="width:100px;display:inline">
                                                             <label class="control-label">“0”为不限回报数量</label>
                                                         </div>
                                                     </div>
@@ -359,8 +392,8 @@
                         </div>
                     </div>
                     <div class="panel-footer" style="text-align:center;">
-                        <button id="previousStep" type="button" class="btn  btn-default btn-lg">上一步</button>
-                        <button id="nextStep" type="button" class="btn  btn-warning btn-lg">下一步</button>
+                        <a th:href="@{/project/launch/project/page}" class="btn  btn-default btn-lg">上一步</a>
+                        <button id="nextStepBtn" type="button" class="btn  btn-warning btn-lg">下一步</button>
                         <a class="btn"> 预览 </a>
                     </div>
                 </div>
@@ -405,9 +438,10 @@
             $('.returnFormDiv').toggle();
         });
 
-        // 汇报信息表单对象数据
+        // 回报信息表单对象数据
         let returnObj = {};
 
+        // 回报说明图片
         $('#uploadBtn').click(function () {
             $('[name=returnPicture]').click();
         });
@@ -431,19 +465,20 @@
                 success: function (response) {
                     var result = response.result;
                     if ('SUCCESS' === result) {
-                        layer.msg('Upload Success');
+                        layer.msg('上传成功');
                         returnObj['describPicPath'] = response.data;
                     }
                     if ('FAILED' === result) {
-                        layer.msg('Upload Failed. ' + response.message);
+                        layer.msg('上传失败. ' + response.message);
                     }
                 },
                 error: function (response) {
-                    layer.msg('Upload Failed. ' + response.status + ': ' + response.statusText);
+                    layer.msg('上传失败. ' + response.status + ': ' + response.statusText);
                 }
             });
         });
 
+        // 添加汇报
         let order = 0;
         $('#okBtn').click(function () {
             // 收集表单数据
@@ -465,7 +500,7 @@
                 success: function (response) {
                     var result = response.result;
                     if ('SUCCESS' === result) {
-                        layer.msg('Save Success');
+                        layer.msg('保存成功');
                         // 回填表格
                         let orderTd = '<td>' + (++order) + '</td>';
                         let supportmoneyTd = '<td>' + returnObj['supportmoney'] + '</td>';
@@ -478,26 +513,35 @@
                             '<button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>' +
                             '<button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>' +
                             '</td>';
-                        let trHTML = '<tr>' + orderTd + supportmoneyTd + contentTd + signalpurchaseTd + contentTd + returndateTd + freightTd + operationTd + '</tr>;'
+                        let trHTML = '<tr>' + orderTd + supportmoneyTd + countTd + signalpurchaseTd + contentTd + returndateTd + freightTd + operationTd + '</tr>;'
                         $('#returnTableBody').append(trHTML);
+                        // 恢复表单
+                        $('resetBtn').click();
+                        // 隐藏表单
+                        $('.returnFormDiv').hide();
                     }
                     if ('FAILED' === result) {
-                        layer.msg('Save Failed. ' + response.message);
+                        layer.msg('保存失败. ' + response.message);
                     }
-                    // 恢复表单
-                    $('resetBtn').click();
-                    // 隐藏表单
-                    $('.returnFormDiv').hide();
                 },
                 error: function (response) {
-                    layer.msg('Save Failed. ' + response.status + ': ' + response.statusText);
+                    layer.msg('保存失败. ' + response.status + ': ' + response.statusText);
                 }
             });
         });
 
-        $('#previousStep').click(function (e) {
-            window.location.href = 'http://localhost/project/launch/project/page';
-        });
+        $('#nextStepBtn').click(function (e) {
+            if ($('#returnTableBody').text().trim() === '') {
+                layer.msg('汇报信息不能为空');
+                return;
+            }
+            // 恢复表单
+            $('resetBtn').click();
+            // 隐藏表单
+            $('.returnFormDiv').hide();
+            // 跳转
+            window.location.href = 'http://localhost/project/create/confirm/page';
+        })
     });
 </script>
 </body>

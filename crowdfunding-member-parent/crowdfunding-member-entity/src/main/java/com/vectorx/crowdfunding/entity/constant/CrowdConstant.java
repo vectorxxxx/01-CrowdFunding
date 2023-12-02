@@ -25,10 +25,9 @@ public class CrowdConstant
     public static final String MSG_HEADER_PICTURE_UPLOAD_FAILED = "头图上传失败！";
     public static final String MSG_DETAIL_PICTURE_EMPTY = "详情图片不可为空！";
     public static final String MSG_DETAIL_PICTURE_UPLOAD_FAILED = "详情图片上传失败！";
-    // 项目汇报
+    public static final String MSG_TEMP_PROJECT_MISSING = "项目及发起人信息丢失！";
+    // 回报信息
     public static final String MSG_RETURN_PICTURE_EMPTY = "回报说明图片不可为空！";
-    public static final String MSG_RETURN_PICTURE_UPLOAD_FAILED = "回报说明图片上传失败！";
-    public static final String MSG_RETURN_PICTURE_UPLOAD_SUCCESS = "回报说明图片上传成功！";
 
     // ==================属性名称==================
     public static final String ATTR_NAME_EXCEPTION = "exception";
@@ -38,7 +37,6 @@ public class CrowdConstant
     public static final String ATTR_NAME_MESSAGE = "message";
     public static final String ATTR_NAME_MEMBER = "member";
     public static final String ATTR_NAME_TEMP_PROJECT = "temp_project";
-    public static final String ATTR_NAME_TEMP_RETURN = "temp_return";
 
     public static final String REDIS_KEY_PREFIX = "REDIS_KEY_PREFIX_";
 
@@ -48,6 +46,7 @@ public class CrowdConstant
     public static final String MEMBER_CENTER = "member-center";
     public static final String MEMBER_CROWD = "member-crowd";
     public static final String PROJECT_LAUNCH = "project-launch";
+    public static final String PROJECT_CONFIRM = "project-confirm";
     // ==================跳转页面==================
     public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";
     public static final String TO_LOGIN_PAGE = "/auth/member/to/login/page";

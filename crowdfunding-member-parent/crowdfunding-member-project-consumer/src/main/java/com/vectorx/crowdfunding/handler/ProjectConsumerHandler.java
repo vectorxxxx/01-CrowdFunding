@@ -1,7 +1,10 @@
 package com.vectorx.crowdfunding.handler;
 
+import com.vectorx.crowdfunding.api.MySQLRemoteService;
 import com.vectorx.crowdfunding.entity.ResultEntity;
 import com.vectorx.crowdfunding.entity.constant.CrowdConstant;
+import com.vectorx.crowdfunding.entity.vo.MemberCenterVO;
+import com.vectorx.crowdfunding.entity.vo.MemberConfirmInfoVO;
 import com.vectorx.crowdfunding.entity.vo.ProjectVO;
 import com.vectorx.crowdfunding.entity.vo.ReturnVO;
 import com.vectorx.crowdfunding.properties.OSSProperties;
@@ -10,9 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -30,43 +36,106 @@ public class ProjectConsumerHandler
     @Autowired
     private OSSProperties ossProperties;
 
+    @Autowired
+    private MySQLRemoteService mySQLRemoteService;
+
+    @ResponseBody
+    @RequestMapping("/save/confirm/draft.json")
+    public ResultEntity<String> saveConfirmDraft(MemberConfirmInfoVO confirmInfoVO, HttpSession session) {
+        // Step0、获取临时ProjectVO对象
+        ProjectVO sessionProjectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+        if (sessionProjectVO == null) {
+            return ResultEntity.failed(CrowdConstant.MSG_TEMP_PROJECT_MISSING);
+        }
+
+        // Step1、设置确认信息
+        sessionProjectVO.setMemberConfirmInfoVO(confirmInfoVO);
+        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT, sessionProjectVO);
+
+        // Step2、返回成功消息
+        return ResultEntity.successWithoutData();
+    }
+
+    @RequestMapping("/create/confirm/information")
+    public String saveConfirmInfo(ModelMap modelMap, MemberConfirmInfoVO confirmInfoVO, HttpSession session) {
+        // Step0、保存草稿
+        final ResultEntity<String> confirmDraftResultEntity = saveConfirmDraft(confirmInfoVO, session);
+        if (ResultEntity.FAILED.equals(confirmDraftResultEntity.getResult())) {
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, confirmDraftResultEntity.getMessage());
+            return CrowdConstant.PROJECT_CONFIRM;
+        }
+
+        // Step1、获取临时ProjectVO对象
+        ProjectVO sessionProjectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+
+        // Step2、查询会员ID
+        final MemberCenterVO memberCenterVO = (MemberCenterVO) session.getAttribute(CrowdConstant.ATTR_NAME_MEMBER);
+        final Integer memberId = memberCenterVO.getId();
+
+        // Step3、存入数据库
+        ResultEntity<String> resultEntity = mySQLRemoteService.saveProjectVORemote(sessionProjectVO, memberId);
+        if (ResultEntity.FAILED.equals(resultEntity.getResult())) {
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, resultEntity.getMessage());
+            return CrowdConstant.PROJECT_CONFIRM;
+        }
+
+        // Step4、移除 Session 中的临时 ProjectVO 对象并跳转至完成页面
+        session.removeAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+        return CrowdConstant.REDIRECT_HTTP_LOCALHOST + "/project/create/success/page";
+    }
+
     /**
      * 创建回报设置信息
+     *
+     * AJAX 请求需要 @ResponseBody
      *
      * @param returnVO
      * @param session
      * @return {@link ResultEntity}<{@link String}>
      */
-    @RequestMapping("/project/create/return/info.json")
+    @ResponseBody
+    @RequestMapping("/create/return/info.json")
     public ResultEntity<String> saveReturnInfo(ReturnVO returnVO, HttpSession session) {
+        // Step0、获取临时ProjectVO对象
+        ProjectVO sessionProjectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+        if (sessionProjectVO == null) {
+            return ResultEntity.failed(CrowdConstant.MSG_TEMP_PROJECT_MISSING);
+        }
+
+        // Step1、没上传描述图片
         if (StringUtils.isEmpty(returnVO.getDescribPicPath())) {
             return ResultEntity.failed(CrowdConstant.MSG_RETURN_PICTURE_EMPTY);
         }
-        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_RETURN, returnVO);
-        return ResultEntity.successWithData(CrowdConstant.MSG_RETURN_PICTURE_UPLOAD_SUCCESS);
+
+        // Step2、设置回报信息
+        List<ReturnVO> returnVOList = sessionProjectVO.getReturnVOList();
+        if (CollectionUtils.isEmpty(returnVOList)) {
+            returnVOList = new ArrayList<>();
+            sessionProjectVO.setReturnVOList(returnVOList);
+        }
+        returnVOList.add(returnVO);
+
+        // Step3、放回Session域
+        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT, sessionProjectVO);
+
+        // Step4、清除错误信息并返回成功消息
+        session.removeAttribute(CrowdConstant.ATTR_NAME_MESSAGE);
+        return ResultEntity.successWithoutData();
     }
 
     /**
      * 创建回报描述图片
      *
-     * @param returnVO
-     * @param returnPicture
-     * @param session
+     * @param returnPicture returnPicture
      * @return {@link ResultEntity}<{@link String}>
      */
+    @ResponseBody
     @RequestMapping("/create/upload/return/picture.json")
-    public ResultEntity<String> saveReturnPicture(ReturnVO returnVO, MultipartFile returnPicture, HttpSession session) {
+    public ResultEntity<String> saveReturnPicture(@RequestParam("returnPicture") MultipartFile returnPicture) {
         if (returnPicture.isEmpty()) {
             return ResultEntity.failed(CrowdConstant.MSG_RETURN_PICTURE_EMPTY);
         }
-        final ResultEntity<String> returnPictureResultEntity = uploadFile(returnPicture);
-        if (ResultEntity.FAILED.equals(returnPictureResultEntity.getResult())) {
-            return ResultEntity.failed(CrowdConstant.MSG_RETURN_PICTURE_UPLOAD_FAILED);
-        }
-        final String describPicPath = returnPictureResultEntity.getData();
-        returnVO.setDescribPicPath(describPicPath);
-        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_RETURN, returnVO);
-        return ResultEntity.successWithData(CrowdConstant.MSG_RETURN_PICTURE_UPLOAD_SUCCESS);
+        return uploadFile(returnPicture);
     }
 
     /**
@@ -80,43 +149,85 @@ public class ProjectConsumerHandler
      */
     @RequestMapping("/create/project/information")
     public String saveProjectBasicInfo(ProjectVO projectVO, MultipartFile headerPicture, List<MultipartFile> detailPictureList, HttpSession session) {
+        // Step0、取出Session域中ProjectVO对象
+        ProjectVO sessionProjectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+        if (sessionProjectVO == null) {
+            sessionProjectVO = new ProjectVO();
+        }
+
         // Step1、上传头图
+        // 当前没上传
         if (headerPicture.isEmpty()) {
-            session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_HEADER_PICTURE_EMPTY);
-            return CrowdConstant.PROJECT_LAUNCH;
+            // 之前也没上传
+            if (StringUtils.isEmpty(sessionProjectVO.getHeaderPicturePath())) {
+                saveProjectVO(projectVO, sessionProjectVO, session);
+                session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_HEADER_PICTURE_EMPTY);
+                return CrowdConstant.PROJECT_LAUNCH;
+            }
         }
-        final ResultEntity<String> headerPictureResultEntity = uploadFile(headerPicture);
-        if (ResultEntity.FAILED.equals(headerPictureResultEntity.getResult())) {
-            session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_HEADER_PICTURE_UPLOAD_FAILED);
-            return CrowdConstant.PROJECT_LAUNCH;
+        // 当前上传了
+        else {
+            // 存下OSS
+            final ResultEntity<String> headerPictureResultEntity = uploadFile(headerPicture);
+            if (ResultEntity.FAILED.equals(headerPictureResultEntity.getResult())) {
+                saveProjectVO(projectVO, sessionProjectVO, session);
+                session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_HEADER_PICTURE_UPLOAD_FAILED);
+                return CrowdConstant.PROJECT_LAUNCH;
+            }
+            final String headerPicturePath = headerPictureResultEntity.getData();
+            sessionProjectVO.setHeaderPicturePath(headerPicturePath);
         }
-        final String headerPicturePath = headerPictureResultEntity.getData();
-        projectVO.setHeaderPicturePath(headerPicturePath);
 
         // Step2、上传详情图片
-        if (CollectionUtils.isEmpty(detailPictureList)) {
-            session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_DETAIL_PICTURE_EMPTY);
-            return CrowdConstant.PROJECT_LAUNCH;
-        }
-        List<String> detailPicturePathList = new ArrayList<>();
-        for (MultipartFile detailPicture : detailPictureList) {
-            if (detailPicture.isEmpty()) {
+        // 当前没上传
+        if (CollectionUtils.isEmpty(detailPictureList) || (detailPictureList.size() == 1 && detailPictureList.get(0).isEmpty())) {
+            // 之前也没上传
+            if (CollectionUtils.isEmpty(sessionProjectVO.getDetailPicturePathList())) {
+                saveProjectVO(projectVO, sessionProjectVO, session);
                 session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_DETAIL_PICTURE_EMPTY);
                 return CrowdConstant.PROJECT_LAUNCH;
             }
-            final ResultEntity<String> detailPictureResultEntity = uploadFile(detailPicture);
-            if (ResultEntity.FAILED.equals(detailPictureResultEntity.getResult())) {
-                session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_DETAIL_PICTURE_UPLOAD_FAILED);
-                return CrowdConstant.PROJECT_LAUNCH;
-            }
-            final String detailPicturePath = detailPictureResultEntity.getData();
-            detailPicturePathList.add(detailPicturePath);
         }
-        projectVO.setDetailPicturePathList(detailPicturePathList);
+        // 当前上传了
+        else {
+            // 存下OSS
+            List<String> detailPicturePathList = new ArrayList<>();
+            for (MultipartFile detailPicture : detailPictureList) {
+                if (detailPicture.isEmpty()) {
+                    saveProjectVO(projectVO, sessionProjectVO, session);
+                    session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_DETAIL_PICTURE_EMPTY);
+                    return CrowdConstant.PROJECT_LAUNCH;
+                }
+                final ResultEntity<String> detailPictureResultEntity = uploadFile(detailPicture);
+                if (ResultEntity.FAILED.equals(detailPictureResultEntity.getResult())) {
+                    saveProjectVO(projectVO, sessionProjectVO, session);
+                    session.setAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_DETAIL_PICTURE_UPLOAD_FAILED);
+                    return CrowdConstant.PROJECT_LAUNCH;
+                }
+                final String detailPicturePath = detailPictureResultEntity.getData();
+                detailPicturePathList.add(detailPicturePath);
+            }
+            sessionProjectVO.setDetailPicturePathList(detailPicturePathList);
+        }
 
         // Step3、projectVO 存入 session 域
-        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT, projectVO);
+        saveProjectVO(projectVO, sessionProjectVO, session);
+
+        // Step4、清除错误信息并跳转
+        session.removeAttribute(CrowdConstant.ATTR_NAME_MESSAGE);
         return CrowdConstant.REDIRECT_HTTP_LOCALHOST + "/project/return/info/page";
+    }
+
+    private void saveProjectVO(ProjectVO projectVO, ProjectVO sessionProjectVO, HttpSession session) {
+        sessionProjectVO.setTypeIdList(projectVO.getTypeIdList());
+        sessionProjectVO.setTagIdList(projectVO.getTagIdList());
+        sessionProjectVO.setProjectName(projectVO.getProjectName());
+        sessionProjectVO.setProjectDescription(projectVO.getProjectDescription());
+        sessionProjectVO.setMoney(projectVO.getMoney());
+        sessionProjectVO.setDay(projectVO.getDay());
+        sessionProjectVO.setCreatedate(projectVO.getCreatedate());
+        sessionProjectVO.setMemberLaunchInfoVO(projectVO.getMemberLaunchInfoVO());
+        session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT, sessionProjectVO);
     }
 
     /**

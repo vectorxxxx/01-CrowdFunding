@@ -3,9 +3,11 @@ package com.vectorx.crowdfunding.mapper;
 import com.vectorx.crowdfunding.entity.po.ProjectItemPicPO;
 import com.vectorx.crowdfunding.entity.po.ProjectItemPicPOExample;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ProjectItemPicPOMapper
 {
     long countByExample(ProjectItemPicPOExample example);
@@ -29,4 +31,6 @@ public interface ProjectItemPicPOMapper
     int updateByPrimaryKeySelective(ProjectItemPicPO record);
 
     int updateByPrimaryKey(ProjectItemPicPO record);
+
+    void insertPathList(@Param("detailPicturePathList") List<String> detailPicturePathList, @Param("projectId") Integer projectId);
 }

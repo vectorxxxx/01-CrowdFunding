@@ -1,7 +1,10 @@
 package com.vectorx.crowdfunding.test;
 
+import com.google.gson.Gson;
 import com.vectorx.crowdfunding.entity.po.MemberPO;
+import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
 import com.vectorx.crowdfunding.mapper.MemberPOMapper;
+import com.vectorx.crowdfunding.mapper.ProjectPOMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -19,13 +22,22 @@ import java.sql.SQLException;
 @SpringBootTest
 public class MyBatisTest
 {
-    private Logger logger = LoggerFactory.getLogger(MyBatisTest.class);
+    private Logger LOGGER = LoggerFactory.getLogger(MyBatisTest.class);
 
     @Autowired
     private DataSource dataSource;
 
     @Autowired
     private MemberPOMapper memberPOMapper;
+
+    @Autowired
+    private ProjectPOMapper projectPOMapper;
+
+    @Test
+    public void testSelectDetailProjectVO() {
+        final DetailProjectVO detailProjectVO = projectPOMapper.selectDetailProjectVO(13);
+        LOGGER.info(new Gson().toJson(detailProjectVO));
+    }
 
     @Test
     public void testMapper() {
@@ -38,6 +50,6 @@ public class MyBatisTest
     @Test
     public void testConnection() throws SQLException {
         final Connection connection = dataSource.getConnection();
-        logger.debug("Connection: " + connection.toString());
+        LOGGER.debug("Connection: " + connection.toString());
     }
 }

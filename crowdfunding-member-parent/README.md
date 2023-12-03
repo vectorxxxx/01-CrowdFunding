@@ -97,4 +97,5 @@ alter table t_project modify project_description longtext null comment '项目�
 alter table t_member_launch_info modify description_detail longtext null comment '详细介绍';
 alter table t_return modify content longtext null comment '回报内容';
 alter table t_project modify money int null comment '筹集金额';
+alter table t_project modify deploydate varchar (19) null comment '项目发起时间';
 ```

@@ -3,19 +3,18 @@ package com.vectorx.crowdfunding.handler;
 import com.vectorx.crowdfunding.api.MySQLRemoteService;
 import com.vectorx.crowdfunding.entity.ResultEntity;
 import com.vectorx.crowdfunding.entity.constant.CrowdConstant;
-import com.vectorx.crowdfunding.entity.vo.MemberCenterVO;
-import com.vectorx.crowdfunding.entity.vo.MemberConfirmInfoVO;
-import com.vectorx.crowdfunding.entity.vo.ProjectVO;
-import com.vectorx.crowdfunding.entity.vo.ReturnVO;
+import com.vectorx.crowdfunding.entity.vo.*;
 import com.vectorx.crowdfunding.properties.OSSProperties;
 import com.vectorx.crowdfunding.util.CrowdOSSUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +37,23 @@ public class ProjectConsumerHandler
 
     @Autowired
     private MySQLRemoteService mySQLRemoteService;
+
+    /**
+     * 获取项目详情信息
+     *
+     * @param projectId 项目ID
+     * @param model 模型
+     * @return {@link String}
+     */
+    @RequestMapping("/get/project/detail/info/{projectId}")
+    public String getProjectDetailInfo(@PathVariable("projectId") Integer projectId, Model model) {
+        final ResultEntity<DetailProjectVO> detailProjectVOResultEntity = mySQLRemoteService.getDetailProjectDataRemote(projectId);
+        if (ResultEntity.SUCCESS.equals(detailProjectVOResultEntity.getResult())) {
+            final DetailProjectVO detailProjectVO = detailProjectVOResultEntity.getData();
+            model.addAttribute("detailProjectVO", detailProjectVO);
+        }
+        return CrowdConstant.PROJECT_DETAIL;
+    }
 
     @ResponseBody
     @RequestMapping("/save/confirm/draft.json")

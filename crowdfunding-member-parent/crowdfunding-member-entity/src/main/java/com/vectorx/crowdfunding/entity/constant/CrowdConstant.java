@@ -37,6 +37,7 @@ public class CrowdConstant
     public static final String ATTR_NAME_MESSAGE = "message";
     public static final String ATTR_NAME_MEMBER = "member";
     public static final String ATTR_NAME_TEMP_PROJECT = "temp_project";
+    public static final String ATTR_NAME_PORTAL_DATA = "portal_data";
 
     public static final String REDIS_KEY_PREFIX = "REDIS_KEY_PREFIX_";
 
@@ -47,6 +48,7 @@ public class CrowdConstant
     public static final String MEMBER_CROWD = "member-crowd";
     public static final String PROJECT_LAUNCH = "project-launch";
     public static final String PROJECT_CONFIRM = "project-confirm";
+    public static final String PROJECT_DETAIL = "project-detail";
     // ==================跳转页面==================
     public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";
     public static final String TO_LOGIN_PAGE = "/auth/member/to/login/page";

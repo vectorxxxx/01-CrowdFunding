@@ -4,10 +4,7 @@ import com.vectorx.crowdfunding.entity.po.MemberConfirmInfoPO;
 import com.vectorx.crowdfunding.entity.po.MemberLaunchInfoPO;
 import com.vectorx.crowdfunding.entity.po.ProjectPO;
 import com.vectorx.crowdfunding.entity.po.ReturnPO;
-import com.vectorx.crowdfunding.entity.vo.MemberConfirmInfoVO;
-import com.vectorx.crowdfunding.entity.vo.MemberLaunchInfoVO;
-import com.vectorx.crowdfunding.entity.vo.ProjectVO;
-import com.vectorx.crowdfunding.entity.vo.ReturnVO;
+import com.vectorx.crowdfunding.entity.vo.*;
 import com.vectorx.crowdfunding.mapper.*;
 import com.vectorx.crowdfunding.service.api.ProjectService;
 import org.slf4j.Logger;
@@ -18,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Transactional(readOnly = true)
 @Service
@@ -44,6 +43,12 @@ public class ProjectServiceImpl implements ProjectService
     @Autowired
     private ReturnPOMapper returnPOMapper;
 
+    /**
+     * 保存项目信息
+     *
+     * @param projectVO
+     * @param memberId
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW,
                    rollbackFor = Exception.class)
     @Override
@@ -57,7 +62,7 @@ public class ProjectServiceImpl implements ProjectService
         projectPOMapper.insertSelective(projectPO);
         final Integer projectId = projectPO.getId();
         LOGGER.info("projectId = " + projectId);
-        
+
         // 2、typeIdList
         final List<Integer> typeIdList = projectVO.getTypeIdList();
         projectPOMapper.insertTypeRelationship(typeIdList, projectId);
@@ -94,5 +99,64 @@ public class ProjectServiceImpl implements ProjectService
             returnPOList.add(returnPO);
         }
         returnPOMapper.insertBatch(returnPOList, projectId);
+    }
+
+    /**
+     * 获取首页分类集合
+     *
+     * @return {@link List}<{@link PortalTypeVO}>
+     */
+    @Override
+    public List<PortalTypeVO> getPortalTypeVOList() {
+        return projectPOMapper.selectPortalTypeVOList();
+    }
+
+    @Override
+    public DetailProjectVO getDetailProjectVO(Integer projectId) {
+        DetailProjectVO detailProjectVO = projectPOMapper.selectDetailProjectVO(projectId);
+
+        // '0-即将开始，1-众筹中，2-众筹成功，3-众筹失败'
+        final Integer status = detailProjectVO.getStatus();
+        String statusText = "";
+        switch (status) {
+            case 0:
+                statusText = "即将开始";
+                break;
+            case 1:
+                statusText = "众筹中";
+                break;
+            case 2:
+                statusText = "众筹成功";
+                break;
+            case 3:
+                statusText = "众筹失败";
+                break;
+            default:
+                break;
+        }
+        detailProjectVO.setStatusText(statusText);
+
+        // 剩余天数
+        try {
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            final long initiationDateTimeStamp = simpleDateFormat.parse(detailProjectVO.getInitiationDate()).getTime();
+            final long currentTimeStamp = new Date().getTime();
+            final int passedDay = (int) ((currentTimeStamp - initiationDateTimeStamp) / 1000 / 60 / 60 / 24);
+            final int remainingDay = detailProjectVO.getRaiseDay() - passedDay;
+            detailProjectVO.setRemainingDay(remainingDay);
+        }
+        catch (ParseException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        // 支持人数
+        Random random = new Random();
+        final List<DetailReturnVO> detailReturnVOList = detailProjectVO.getDetailReturnVOList();
+        for (DetailReturnVO detailReturnVO : detailReturnVOList) {
+            final int supporterNum = random.nextInt(100);
+            detailReturnVO.setSupporterNum(String.valueOf(supporterNum));
+        }
+
+        return detailProjectVO;
     }
 }

@@ -2,6 +2,8 @@ package com.vectorx.crowdfunding.mapper;
 
 import com.vectorx.crowdfunding.entity.po.ProjectPO;
 import com.vectorx.crowdfunding.entity.po.ProjectPOExample;
+import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
+import com.vectorx.crowdfunding.entity.vo.PortalTypeVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +34,34 @@ public interface ProjectPOMapper
 
     int updateByPrimaryKey(ProjectPO record);
 
+    /**
+     * 插入类型关联表
+     *
+     * @param typeIdList 类型集合
+     * @param projectId 项目ID
+     */
     void insertTypeRelationship(@Param("typeIdList") List<Integer> typeIdList, @Param("projectId") Integer projectId);
 
+    /**
+     * 插入标签关联表
+     *
+     * @param tagIdList 标签集合
+     * @param projectId 项目ID
+     */
     void insertTagRelationship(@Param("tagIdList") List<Integer> tagIdList, @Param("projectId") Integer projectId);
+
+    /**
+     * 查询首页内容
+     *
+     * @return {@link List}<{@link PortalTypeVO}>
+     */
+    List<PortalTypeVO> selectPortalTypeVOList();
+
+    /**
+     * 查询项目详情信息
+     *
+     * @param projectId 项目ID
+     * @return {@link DetailProjectVO}
+     */
+    DetailProjectVO selectDetailProjectVO(@Param("projectId") Integer projectId);
 }

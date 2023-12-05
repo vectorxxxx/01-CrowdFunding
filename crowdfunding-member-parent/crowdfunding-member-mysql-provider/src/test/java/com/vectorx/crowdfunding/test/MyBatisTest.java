@@ -3,6 +3,7 @@ package com.vectorx.crowdfunding.test;
 import com.google.gson.Gson;
 import com.vectorx.crowdfunding.entity.po.MemberPO;
 import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
+import com.vectorx.crowdfunding.entity.vo.ProjectPaginationVO;
 import com.vectorx.crowdfunding.mapper.MemberPOMapper;
 import com.vectorx.crowdfunding.mapper.ProjectPOMapper;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,6 +34,12 @@ public class MyBatisTest
 
     @Autowired
     private ProjectPOMapper projectPOMapper;
+
+    @Test
+    public void testSelectProjectPaginationVO() {
+        final List<ProjectPaginationVO> projectPaginationVOList = projectPOMapper.selectProjectPaginationVO(0, 6, 2, 0, 0, "");
+        LOGGER.info(new Gson().toJson(projectPaginationVOList));
+    }
 
     @Test
     public void testSelectDetailProjectVO() {

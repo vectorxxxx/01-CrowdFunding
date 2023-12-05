@@ -2,6 +2,73 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vectorx.crowdfunding.mapper.ProjectPOMapper">
     <!--
+    List<ProjectPaginationVO> selectProjectPaginationVO(
+            @Param("offset")
+                    Integer offset,
+            @Param("rows")
+                    Integer rows,
+            @Param("typeId")
+                    Integer typeId,
+            @Param("status")
+                    Integer status,
+            @Param("sortType")
+                    Integer sortType,
+            @Param("searchContent")
+                    String searchContent);
+    -->
+    <resultMap id="loadProjectPaginationVOResultMap" type="com.vectorx.crowdfunding.entity.vo.ProjectPaginationVO">
+        <id column="id" jdbcType="INTEGER" property="projectId"/>
+        <result column="project_name" jdbcType="VARCHAR" property="projectName"/>
+        <result column="money" jdbcType="BIGINT" property="targetMoney"/>
+        <result column="deploydate" jdbcType="VARCHAR" property="initiationDate"/>
+        <result column="supporter" jdbcType="INTEGER" property="supporterNum"/>
+        <result column="completion" jdbcType="INTEGER" property="reachedProgress"/>
+        <result column="header_picture_path" jdbcType="VARCHAR" property="headerPicturePath"/>
+    </resultMap>
+    <sql id="projectPaginationVOSql">
+        from t_project
+        left join t_project_type on t_project.id = t_project_type.projectid
+        where 1=1
+        <if test="typeId != null">
+            and typeid = #{typeId}
+        </if>
+        -- '0-即将开始，1-众筹中，2-众筹成功，3-众筹失败'
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="searchContent != null">
+            and project_name like CONCAT('%', #{searchContent}, '%')
+        </if>
+        -- 0-综合排序，1-最新上线，2-金额最多，3-支持最多
+        <if test="sortType == null">
+            order by projectid desc
+        </if>
+        <if test="sortType != null and sortType == 0">
+            order by deploydate desc
+        </if>
+        <if test="sortType != null and sortType == 1">
+            order by money desc
+        </if>
+        <if test="sortType != null and sortType == 2">
+            order by supporter desc
+        </if>
+    </sql>
+    <select id="selectProjectPaginationVO" resultMap="loadProjectPaginationVOResultMap">
+        select t_project.id,
+        project_name,
+        money,
+        deploydate,
+        supporter,
+        completion,
+        header_picture_path
+        <include refid="projectPaginationVOSql"></include>
+        limit #{offset}, #{rows}
+    </select>
+    <select id="countProjectPaginationVO" resultType="java.lang.Integer">
+        select count(1)
+        <include refid="projectPaginationVOSql"></include>
+    </select>
+    <!--
     DetailProjectVO selectDetailProjectVO(@Param("projectId") Integer projectId);
     -->
     <resultMap id="loadDetailProjectVOResultMap" type="com.vectorx.crowdfunding.entity.vo.DetailProjectVO">

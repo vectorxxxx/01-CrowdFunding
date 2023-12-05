@@ -110,7 +110,7 @@
                                 <a rel="nofollow" th:href="@{/}"><i class="glyphicon glyphicon-home"></i> 众筹首页</a>
                             </li>
                             <li>
-                                <a rel="nofollow" href="projects.html"><i class="glyphicon glyphicon-th-large"></i> 项目总览</a>
+                                <a rel="nofollow" th:href="@{/project/get/project/pagination/data/0}"><i class="glyphicon glyphicon-th-large"></i> 项目总览</a>
                             </li>
                             <li class="active">
                                 <a rel="nofollow" href="javascript:;"><i class="glyphicon glyphicon-edit"></i> 发起项目</a>
@@ -395,7 +395,7 @@
 <script type="text/javascript">
     $(function () {
         $('#agreeProtocolBtn').click(function () {
-            window.location.href = "http://localhost/project/launch/project/page";
+            window.location.href = "[[@{/project/launch/project/page}]]";
         });
     })
 </script>

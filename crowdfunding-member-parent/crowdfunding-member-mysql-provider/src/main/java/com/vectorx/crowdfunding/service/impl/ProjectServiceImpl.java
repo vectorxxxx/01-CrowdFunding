@@ -159,4 +159,44 @@ public class ProjectServiceImpl implements ProjectService
 
         return detailProjectVO;
     }
+
+    /**
+     * 获取项目分页信息
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param typeId
+     * @param status
+     * @param sortType
+     * @param searchContent
+     * @return {@link List}<{@link ProjectPaginationVO}>
+     */
+    @Override
+    public List<ProjectPaginationVO> getProjectPaginationVOList(Integer pageNum, Integer pageSize, Integer typeId, Integer status, Integer sortType, String searchContent) {
+        final List<ProjectPaginationVO> projectPaginationVOList = projectPOMapper.selectProjectPaginationVO(pageNum * 12, pageSize, typeId, status, sortType, searchContent);
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            for (ProjectPaginationVO projectPaginationVO : projectPaginationVOList) {
+                projectPaginationVO.setInitiationDate(simpleDateFormat.format(simpleDateFormat.parse(projectPaginationVO.getInitiationDate())));
+            }
+        }
+        catch (ParseException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        return projectPaginationVOList;
+    }
+
+    /**
+     * 获取项目分页总数
+     *
+     * @param typeId
+     * @param status
+     * @param sortType
+     * @param searchContent
+     * @return {@link Integer}
+     */
+    @Override
+    public Integer getProjectPaginationVOCount(Integer typeId, Integer status, Integer sortType, String searchContent) {
+        return projectPOMapper.countProjectPaginationVO(typeId, status, sortType, searchContent);
+    }
 }

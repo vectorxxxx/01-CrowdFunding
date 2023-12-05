@@ -38,6 +38,44 @@ public class ProjectConsumerHandler
     @Autowired
     private MySQLRemoteService mySQLRemoteService;
 
+    @RequestMapping("/get/project/pagination/data/{pageNum}")
+    public String getProjectPaginationData(
+            @PathVariable("pageNum")
+                    Integer pageNum,
+            @RequestParam(value = "pageSize",
+                          defaultValue = "12")
+                    Integer pageSize,
+            @RequestParam(value = "typeId",
+                          required = false)
+                    String typeId,
+            @RequestParam(value = "status",
+                          required = false)
+                    String status,
+            @RequestParam(value = "sortType",
+                          defaultValue = "0")
+                    String sortType,
+            @RequestParam(value = "searchContent",
+                          required = false)
+                    String searchContent, ModelMap modelMap) {
+        // 查询总数
+        Integer typeIdInt = StringUtils.isEmpty(typeId) ? null : Integer.valueOf(typeId);
+        Integer statusInt = StringUtils.isEmpty(status) ? null : Integer.valueOf(status);
+        Integer sortTypeInt = StringUtils.isEmpty(sortType) ? null : Integer.valueOf(sortType);
+        final ResultEntity<Integer> totalCountResultEntity = mySQLRemoteService.getProjectPaginationTotalCountRemote(typeIdInt, statusInt, sortTypeInt, searchContent);
+        if (ResultEntity.FAILED.equals(totalCountResultEntity.getResult())) {
+            return CrowdConstant.PROJECT_OVERVIEW;
+        }
+        // 分页查询项目总览数据
+        final ResultEntity<List<ProjectPaginationVO>> projectPaginationVOResultEntity = mySQLRemoteService.getProjectPaginationDataRemote(pageNum, pageSize, typeIdInt, statusInt,
+                sortTypeInt, searchContent);
+        if (ResultEntity.FAILED.equals(projectPaginationVOResultEntity.getResult())) {
+            return CrowdConstant.PROJECT_OVERVIEW;
+        }
+        modelMap.addAttribute("totalCount", totalCountResultEntity.getData());
+        modelMap.addAttribute("projectPaginationVOList", projectPaginationVOResultEntity.getData());
+        return CrowdConstant.PROJECT_OVERVIEW;
+    }
+
     /**
      * 获取项目详情信息
      *
@@ -46,7 +84,9 @@ public class ProjectConsumerHandler
      * @return {@link String}
      */
     @RequestMapping("/get/project/detail/info/{projectId}")
-    public String getProjectDetailInfo(@PathVariable("projectId") Integer projectId, Model model) {
+    public String getProjectDetailInfo(
+            @PathVariable("projectId")
+                    Integer projectId, Model model) {
         final ResultEntity<DetailProjectVO> detailProjectVOResultEntity = mySQLRemoteService.getDetailProjectDataRemote(projectId);
         if (ResultEntity.SUCCESS.equals(detailProjectVOResultEntity.getResult())) {
             final DetailProjectVO detailProjectVO = detailProjectVOResultEntity.getData();
@@ -147,7 +187,9 @@ public class ProjectConsumerHandler
      */
     @ResponseBody
     @RequestMapping("/create/upload/return/picture.json")
-    public ResultEntity<String> saveReturnPicture(@RequestParam("returnPicture") MultipartFile returnPicture) {
+    public ResultEntity<String> saveReturnPicture(
+            @RequestParam("returnPicture")
+                    MultipartFile returnPicture) {
         if (returnPicture.isEmpty()) {
             return ResultEntity.failed(CrowdConstant.MSG_RETURN_PICTURE_EMPTY);
         }

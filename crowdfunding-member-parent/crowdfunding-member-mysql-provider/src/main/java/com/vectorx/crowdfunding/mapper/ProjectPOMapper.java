@@ -4,6 +4,7 @@ import com.vectorx.crowdfunding.entity.po.ProjectPO;
 import com.vectorx.crowdfunding.entity.po.ProjectPOExample;
 import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
 import com.vectorx.crowdfunding.entity.vo.PortalTypeVO;
+import com.vectorx.crowdfunding.entity.vo.ProjectPaginationVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -26,9 +27,17 @@ public interface ProjectPOMapper
 
     ProjectPO selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") ProjectPO record, @Param("example") ProjectPOExample example);
+    int updateByExampleSelective(
+            @Param("record")
+                    ProjectPO record,
+            @Param("example")
+                    ProjectPOExample example);
 
-    int updateByExample(@Param("record") ProjectPO record, @Param("example") ProjectPOExample example);
+    int updateByExample(
+            @Param("record")
+                    ProjectPO record,
+            @Param("example")
+                    ProjectPOExample example);
 
     int updateByPrimaryKeySelective(ProjectPO record);
 
@@ -40,7 +49,11 @@ public interface ProjectPOMapper
      * @param typeIdList 类型集合
      * @param projectId 项目ID
      */
-    void insertTypeRelationship(@Param("typeIdList") List<Integer> typeIdList, @Param("projectId") Integer projectId);
+    void insertTypeRelationship(
+            @Param("typeIdList")
+                    List<Integer> typeIdList,
+            @Param("projectId")
+                    Integer projectId);
 
     /**
      * 插入标签关联表
@@ -48,7 +61,11 @@ public interface ProjectPOMapper
      * @param tagIdList 标签集合
      * @param projectId 项目ID
      */
-    void insertTagRelationship(@Param("tagIdList") List<Integer> tagIdList, @Param("projectId") Integer projectId);
+    void insertTagRelationship(
+            @Param("tagIdList")
+                    List<Integer> tagIdList,
+            @Param("projectId")
+                    Integer projectId);
 
     /**
      * 查询首页内容
@@ -63,5 +80,51 @@ public interface ProjectPOMapper
      * @param projectId 项目ID
      * @return {@link DetailProjectVO}
      */
-    DetailProjectVO selectDetailProjectVO(@Param("projectId") Integer projectId);
+    DetailProjectVO selectDetailProjectVO(
+            @Param("projectId")
+                    Integer projectId);
+
+    /**
+     * 查询项目分页集合
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param typeId
+     * @param status
+     * @param sortType
+     * @param searchContent
+     * @return {@link List}<{@link ProjectPaginationVO}>
+     */
+    List<ProjectPaginationVO> selectProjectPaginationVO(
+            @Param("offset")
+                    Integer offset,
+            @Param("rows")
+                    Integer rows,
+            @Param("typeId")
+                    Integer typeId,
+            @Param("status")
+                    Integer status,
+            @Param("sortType")
+                    Integer sortType,
+            @Param("searchContent")
+                    String searchContent);
+
+    /**
+     * 查询项目分页总数
+     *
+     * @param typeId
+     * @param status
+     * @param sortType
+     * @param searchContent
+     * @return {@link Integer}
+     */
+    Integer countProjectPaginationVO(
+            @Param("typeId")
+                    Integer typeId,
+            @Param("status")
+                    Integer status,
+            @Param("sortType")
+                    Integer sortType,
+            @Param("searchContent")
+                    String searchContent);
 }

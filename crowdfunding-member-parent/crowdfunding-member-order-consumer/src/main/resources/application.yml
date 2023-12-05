@@ -1,0 +1,21 @@
+server:
+  port: 6000
+spring:
+  application:
+    name: vectorx-crowdfunding-order
+  # 模板引擎
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  # SpringSession
+  session:
+    store-type: redis
+  # Redis
+  redis:
+    host: 127.0.0.1
+    password: 123456
+# 注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka

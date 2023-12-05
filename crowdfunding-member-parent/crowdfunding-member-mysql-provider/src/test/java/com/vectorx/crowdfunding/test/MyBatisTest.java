@@ -3,8 +3,10 @@ package com.vectorx.crowdfunding.test;
 import com.google.gson.Gson;
 import com.vectorx.crowdfunding.entity.po.MemberPO;
 import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
+import com.vectorx.crowdfunding.entity.vo.OrderProjectVO;
 import com.vectorx.crowdfunding.entity.vo.ProjectPaginationVO;
 import com.vectorx.crowdfunding.mapper.MemberPOMapper;
+import com.vectorx.crowdfunding.mapper.OrderProjectPOMapper;
 import com.vectorx.crowdfunding.mapper.ProjectPOMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +36,15 @@ public class MyBatisTest
 
     @Autowired
     private ProjectPOMapper projectPOMapper;
+
+    @Autowired
+    private OrderProjectPOMapper orderProjectPOMapper;
+
+    @Test
+    public void testorderProjectPO() {
+        final OrderProjectVO orderProjectVO = orderProjectPOMapper.selectOrderProjectVO(21, 16);
+        System.out.println(orderProjectVO.toString());
+    }
 
     @Test
     public void testSelectProjectPaginationVO() {

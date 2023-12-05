@@ -26,6 +26,9 @@ zuul:
     crowdfunding-project:
       service-id: vectorx-crowdfunding-project
       path: /project/**
+    crowdfunding-order:
+      service-id: vectorx-crowdfunding-order
+      path: /order/**
 ribbon:
   ConnectTimeout: 10000 # 连接超时时间(ms)
   ReadTimeout: 10000 # 通信超时时间(ms)

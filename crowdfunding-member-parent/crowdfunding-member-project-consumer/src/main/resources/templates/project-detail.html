@@ -167,7 +167,7 @@
                                 </div>
                                 <p>剩余 <span th:text="${detailProjectVO.remainingDay}">15</span> 天</p>
                                 <div>
-                                    <p><span>已有 <span th:text="${detailProjectVO.supporterNum}">629</span> 人支持该项目</p>
+                                    <p><span>已有 <span th:text="${detailProjectVO.supporterNum}">629</span> 人支持该项目</span></p>
                                     <button type="button" class="btn  btn-warning btn-lg btn-block" data-toggle="modal" data-target="#myModal">立即支持</button>
                                 </div>
                             </div>
@@ -217,7 +217,8 @@
                                     <p th:if="${detailReturnVO.freight == 0}">配送费用：包邮</p>
                                     <p th:if="${detailReturnVO.freight != 0}">配送费用：[[${detailReturnVO.freight}]]</p>
                                     <p>预计发放时间：项目筹款成功后的 [[${detailReturnVO.returnDay}]] 天内</p>
-                                    <button type="button" class="btn  btn-warning btn-lg" onclick="window.location.href='pay-step-1.html'">支持</button>
+                                    <a th:href="@{/order/confirm/return/info/__${detailProjectVO.projectId}__/__${detailReturnVO.returnId}__}"
+                                       class="btn  btn-warning btn-lg">支持</a>
                                     <br><br>
                                     <p th:text="${detailReturnVO.content}">感谢您的支持，在众筹开始后，您将以79元的优惠价格获得“遇见彩虹?”智能插座一件（参考价208元）。</p>
                                 </div>

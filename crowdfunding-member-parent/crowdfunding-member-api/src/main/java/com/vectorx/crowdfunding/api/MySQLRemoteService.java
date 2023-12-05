@@ -2,10 +2,7 @@ package com.vectorx.crowdfunding.api;
 
 import com.vectorx.crowdfunding.entity.ResultEntity;
 import com.vectorx.crowdfunding.entity.po.MemberPO;
-import com.vectorx.crowdfunding.entity.vo.DetailProjectVO;
-import com.vectorx.crowdfunding.entity.vo.PortalTypeVO;
-import com.vectorx.crowdfunding.entity.vo.ProjectPaginationVO;
-import com.vectorx.crowdfunding.entity.vo.ProjectVO;
+import com.vectorx.crowdfunding.entity.vo.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,4 +72,11 @@ public interface MySQLRemoteService
                     ProjectVO projectVO,
             @RequestParam("memberId")
                     Integer memberId);
+
+    @RequestMapping("/get/order/project/data/remote")
+    ResultEntity<OrderProjectVO> getOrderProjectDataRemote(
+            @RequestParam("projectId")
+                    Integer projectId,
+            @RequestParam("returnId")
+                    Integer returnId);
 }

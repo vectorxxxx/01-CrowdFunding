@@ -50,6 +50,8 @@ public class CrowdConstant
     public static final String PROJECT_CONFIRM = "project-confirm";
     public static final String PROJECT_DETAIL = "project-detail";
     public static final String PROJECT_OVERVIEW = "project-overview";
+    public static final String CONFIRM_PROJECT = "confirm_project";
+    public static final String CONFIRM_ORDER = "confirm_order";
     // ==================跳转页面==================
     public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";
     public static final String TO_LOGIN_PAGE = "/auth/member/to/login/page";

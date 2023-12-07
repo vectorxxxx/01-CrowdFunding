@@ -20,15 +20,33 @@ public interface MemberLaunchInfoPOMapper
 
     int insertSelective(MemberLaunchInfoPO record);
 
+    List<MemberLaunchInfoPO> selectByExampleWithBLOBs(MemberLaunchInfoPOExample example);
+
     List<MemberLaunchInfoPO> selectByExample(MemberLaunchInfoPOExample example);
 
     MemberLaunchInfoPO selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") MemberLaunchInfoPO record, @Param("example") MemberLaunchInfoPOExample example);
+    int updateByExampleSelective(
+            @Param("record")
+                    MemberLaunchInfoPO record,
+            @Param("example")
+                    MemberLaunchInfoPOExample example);
 
-    int updateByExample(@Param("record") MemberLaunchInfoPO record, @Param("example") MemberLaunchInfoPOExample example);
+    int updateByExampleWithBLOBs(
+            @Param("record")
+                    MemberLaunchInfoPO record,
+            @Param("example")
+                    MemberLaunchInfoPOExample example);
+
+    int updateByExample(
+            @Param("record")
+                    MemberLaunchInfoPO record,
+            @Param("example")
+                    MemberLaunchInfoPOExample example);
 
     int updateByPrimaryKeySelective(MemberLaunchInfoPO record);
+
+    int updateByPrimaryKeyWithBLOBs(MemberLaunchInfoPO record);
 
     int updateByPrimaryKey(MemberLaunchInfoPO record);
 }

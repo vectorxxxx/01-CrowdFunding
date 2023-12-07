@@ -9,7 +9,8 @@
                     Integer returnId);
     -->
     <select id="selectOrderProjectVO" resultType="com.vectorx.crowdfunding.entity.vo.OrderProjectVO">
-        select t_project.id,
+        select t_project.id          projectId,
+               t_return.id           returnId,
                project_name          projectName,
                description_simple    launchName,
                content               returnContent,
@@ -19,10 +20,11 @@
                signalpurchase        signalPurchase,
                purchase
         from t_project
-                 left join t_member_launch_info on t_project.memberid = t_member_launch_info.memberid
+                 left join t_member_launch_info on t_project.id = t_member_launch_info.project_id
+            and t_project.memberid = t_member_launch_info.memberid
                  left join t_return on t_project.id = t_return.projectid
         where t_project.id = #{projectId}
-          and t_member_launch_info.id = #{returnId}
+          and t_return.id = #{returnId}
     </select>
 
     <resultMap id="BaseResultMap" type="com.vectorx.crowdfunding.entity.po.OrderProjectPO">

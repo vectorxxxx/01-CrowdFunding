@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 public class ProjectProviderHandler
 {
-    private Logger LOGGER = LoggerFactory.getLogger(ProjectProviderHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectProviderHandler.class);
 
     @Autowired
     private ProjectService projectService;

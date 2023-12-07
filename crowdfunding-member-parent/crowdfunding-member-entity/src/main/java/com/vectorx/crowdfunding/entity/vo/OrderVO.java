@@ -1,0 +1,26 @@
+package com.vectorx.crowdfunding.entity.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderVO implements Serializable
+{
+    private static final long serialVersionUID = 860580506118142641L;
+
+    private Integer id;
+
+    // 是否需要发票
+    private Integer invoice;
+    
+    // 发票抬头
+    private String invoiceTitle;
+
+    // 备注
+    private String orderRemark;
+}

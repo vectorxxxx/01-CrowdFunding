@@ -26,7 +26,7 @@ import java.util.Random;
 @Service
 public class ProjectServiceImpl implements ProjectService
 {
-    private Logger LOGGER = LoggerFactory.getLogger(ProjectServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
     @Autowired
     private ProjectPOMapper projectPOMapper;
@@ -78,6 +78,7 @@ public class ProjectServiceImpl implements ProjectService
         // 5、MemberLaunchInfo
         final MemberLaunchInfoVO memberLaunchInfoVO = projectVO.getMemberLaunchInfoVO();
         MemberLaunchInfoPO memberLaunchInfoPO = new MemberLaunchInfoPO();
+        memberLaunchInfoPO.setProjectId(projectId);
         memberLaunchInfoPO.setMemberid(memberId);
         BeanUtils.copyProperties(memberLaunchInfoVO, memberLaunchInfoPO);
         memberLaunchInfoPOMapper.insertSelective(memberLaunchInfoPO);
@@ -85,6 +86,7 @@ public class ProjectServiceImpl implements ProjectService
         // 6、MemberConfirmInfo
         final MemberConfirmInfoVO memberConfirmInfoVO = projectVO.getMemberConfirmInfoVO();
         MemberConfirmInfoPO memberConfirmInfoPO = new MemberConfirmInfoPO();
+        memberConfirmInfoPO.setProjectId(projectId);
         memberConfirmInfoPO.setMemberid(memberId);
         BeanUtils.copyProperties(memberConfirmInfoVO, memberConfirmInfoPO);
         memberConfirmInfoPOMapper.insertSelective(memberConfirmInfoPO);

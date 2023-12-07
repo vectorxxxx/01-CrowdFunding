@@ -30,7 +30,7 @@ import java.util.Objects;
 @Controller
 public class ProjectConsumerHandler
 {
-    private Logger LOGGER = LoggerFactory.getLogger(ProjectConsumerHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectConsumerHandler.class);
 
     @Autowired
     private OSSProperties ossProperties;

@@ -28,6 +28,9 @@ public class CrowdConstant
     public static final String MSG_TEMP_PROJECT_MISSING = "项目及发起人信息丢失！";
     // 回报信息
     public static final String MSG_RETURN_PICTURE_EMPTY = "回报说明图片不可为空！";
+    // 订单确认
+    public static final String MSG_CONFIRM_RETURN_MISSING = "确认回报内容丢失！";
+    public static final String MSG_SAVE_NEW_ADDRESS_FAILED = "确认配送信息失败！";
 
     // ==================属性名称==================
     public static final String ATTR_NAME_EXCEPTION = "exception";
@@ -50,7 +53,7 @@ public class CrowdConstant
     public static final String PROJECT_CONFIRM = "project-confirm";
     public static final String PROJECT_DETAIL = "project-detail";
     public static final String PROJECT_OVERVIEW = "project-overview";
-    public static final String CONFIRM_PROJECT = "confirm_project";
+    public static final String CONFIRM_RETURN = "confirm_return";
     public static final String CONFIRM_ORDER = "confirm_order";
     // ==================跳转页面==================
     public static final String TO_REGISTER_PAGE = "/auth/member/to/reg/page";

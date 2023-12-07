@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrderProviderHandler
 {
-    private Logger LOGGER = LoggerFactory.getLogger(OrderProviderHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderProviderHandler.class);
 
     @Autowired
     private OrderService orderService;
@@ -26,7 +26,7 @@ public class OrderProviderHandler
      * @return {@link ResultEntity}<{@link OrderProjectVO}>
      */
     @RequestMapping("/get/order/project/data/remote")
-    ResultEntity<OrderProjectVO> getOrderProjectDataRemote(
+    public ResultEntity<OrderProjectVO> getOrderProjectDataRemote(
             @RequestParam("projectId")
                     Integer projectId,
             @RequestParam("returnId")

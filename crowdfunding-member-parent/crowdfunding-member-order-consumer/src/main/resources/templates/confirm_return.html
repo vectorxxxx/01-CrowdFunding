@@ -199,17 +199,19 @@
                                             <td><input id="returnCountInput" type="text" class="form-control" style="width:60px;" th:value="${orderProjectVO.returnCount}"
                                                        value="1"></td>
                                             <td style="color:#F60">￥ [[${orderProjectVO.supportUnitPrice}]]</td>
-                                            <td th:if="${orderProjectVO.projectName}">免运费</td>
+                                            <td th:if="${orderProjectVO.deliveryCharge == 0}">免运费</td>
+                                            <td th:if="${orderProjectVO.deliveryCharge != 0}" style="color:#F60">￥ [[${orderProjectVO.deliveryCharge}]]</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                     <div style="float:right;">
                                         <p>总价(含运费)
-                                            ：<span id="totalPrice" style="font-size:16px;color:#F60;">￥[[${orderProjectVO.returnCount * orderProjectVO.supportUnitPrice}]]</span>
+                                            ：<span id="totalPrice" style="font-size:16px;color:#F60;">￥[[${orderProjectVO.returnCount *
+                                                orderProjectVO.supportUnitPrice + orderProjectVO.deliveryCharge}]]</span>
                                         </p>
-                                        <a th:href="@{/}" class="btn btn-warning btn-lg" style="float:right;"><i
+                                        <button id="submitBtn" type="button" class="btn btn-warning btn-lg" style="float:right;"><i
                                                 class="glyphicon glyphicon-credit-card"></i> 去结算
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -264,6 +266,7 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="script/docs.min.js"></script>
 <script src="script/back-to-top.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
 <script>
     $('#myTab a').click(function (e) {
         e.preventDefault()
@@ -272,9 +275,43 @@
 
     $(function () {
         let supportUnitPrice = [[${session.orderProjectVO.supportUnitPrice}]];
+        let signalPurchase = [[${session.orderProjectVO.signalPurchase}]];
+        let purchase = [[${session.orderProjectVO.purchase}]];
+        let deliveryCharge = [[${session.orderProjectVO.deliveryCharge}]];
         $('#returnCountInput').change(function () {
-            let returnCount = $(this).val();
-            $('#totalPrice').html('￥' + supportUnitPrice * returnCount);
+            let returnCount = $.trim($(this).val());
+            if (!returnCount) {
+                layer.msg('请填写回报数量');
+                $(this).val(this.defaultValue);
+                return;
+            }
+            if (returnCount <= 0) {
+                layer.msg('回报数量不能少于1个');
+                $(this).val(this.defaultValue);
+                return;
+            }
+            if (signalPurchase === 1 && parseInt(returnCount) > parseInt(purchase)) {
+                layer.msg('超过限购数量' + purchase + '个，请重新输入');
+                $(this).val(this.defaultValue);
+                return;
+            }
+            let totalPrice = supportUnitPrice * returnCount + deliveryCharge;
+            $('#totalPrice').html('￥' + totalPrice);
+        });
+
+        $('#submitBtn').click(function () {
+            let returnCount = $('#returnCountInput').val();
+            if (!returnCount) {
+                layer.msg('请填写回报数量');
+                $(this).val(this.defaultValue);
+                return;
+            }
+            if (returnCount <= 0) {
+                layer.msg('回报数量不能少于1个');
+                $(this).val(this.defaultValue);
+                return;
+            }
+            window.location.href = '[[@{/order/confirm/order/info/}]]' + returnCount;
         });
     })
 </script>

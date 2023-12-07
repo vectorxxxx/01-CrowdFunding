@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RedisTest
 {
-    private Logger logger = LoggerFactory.getLogger(RedisTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisTest.class);
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -29,6 +29,6 @@ public class RedisTest
     public void testRedis2() {
         final ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         final String value = operations.get("foo");
-        logger.info(value);
+        LOGGER.info(value);
     }
 }

@@ -1,7 +1,6 @@
 package com.vectorx.crowdfunding.entity.po;
 
-public class MemberConfirmInfoPO
-{
+public class MemberConfirmInfoPO {
     private Integer id;
 
     private Integer memberid;
@@ -9,6 +8,8 @@ public class MemberConfirmInfoPO
     private String paynum;
 
     private String cardnum;
+
+    private Integer projectId;
 
     public Integer getId() {
         return id;
@@ -40,5 +41,13 @@ public class MemberConfirmInfoPO
 
     public void setCardnum(String cardnum) {
         this.cardnum = cardnum == null ? null : cardnum.trim();
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }

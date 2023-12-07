@@ -1,18 +1,19 @@
 package com.vectorx.crowdfunding.entity.po;
 
-public class MemberLaunchInfoPO
-{
+public class MemberLaunchInfoPO {
     private Integer id;
 
     private Integer memberid;
 
     private String descriptionSimple;
 
-    private String descriptionDetail;
-
     private String phoneNum;
 
     private String serviceNum;
+
+    private Integer projectId;
+
+    private String descriptionDetail;
 
     public Integer getId() {
         return id;
@@ -38,14 +39,6 @@ public class MemberLaunchInfoPO
         this.descriptionSimple = descriptionSimple == null ? null : descriptionSimple.trim();
     }
 
-    public String getDescriptionDetail() {
-        return descriptionDetail;
-    }
-
-    public void setDescriptionDetail(String descriptionDetail) {
-        this.descriptionDetail = descriptionDetail == null ? null : descriptionDetail.trim();
-    }
-
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -60,5 +53,21 @@ public class MemberLaunchInfoPO
 
     public void setServiceNum(String serviceNum) {
         this.serviceNum = serviceNum == null ? null : serviceNum.trim();
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getDescriptionDetail() {
+        return descriptionDetail;
+    }
+
+    public void setDescriptionDetail(String descriptionDetail) {
+        this.descriptionDetail = descriptionDetail == null ? null : descriptionDetail.trim();
     }
 }

@@ -168,7 +168,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" th:if="${not #strings.isEmpty(message)}">[[${message}]]</div>
+                    <div class="panel-body" th:if="${#strings.isEmpty(message)}">
                         <div class="container-fluid">
                             <div class="row clearfix">
                                 <div class="col-md-12 column">
@@ -190,21 +191,17 @@
                                     </blockquote>
                                 </div>
                                 <div class="col-md-12 column" style="padding:0 120px;">
+                                    <th:block th:if="${not #lists.isEmpty(session.addressVOList)}">
+                                        <div class="radio" th:each="addressVO:${session.addressVOList}">
+                                            <label>
+                                                <input type="radio" name="optionsRadios" th:value="${addressVO.id}">
+                                                [[${addressVO.consigneeName}]] [[${addressVO.phoneNum}]] [[${addressVO.address}]]
+                                            </label>
+                                        </div>
+                                    </th:block>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                                            xxxxx 188****3342 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                            xxxxx 188****3342 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                            <input type="radio" name="optionsRadios" value="option2" th:checked="${#lists.isEmpty(session.addressVOList)}">
                                             新地址
                                         </label>
                                     </div>
@@ -216,29 +213,29 @@
                                     <div class="panel panel-default" style="border-style: dashed;background-color:#eceeef">
                                         <div class="panel-body">
                                             <div class="col-md-12 column">
-                                                <form class="form-horizontal">
+                                                <form th:action="@{/order/add/new/address}" method="post" class="form-horizontal">
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">收货人（*）</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" style="width:200px;" placeholder="姓名：xxxx">
+                                                            <input name="consigneeName" type="text" class="form-control" style="width:200px;" placeholder="姓名：xxxx">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">手机（*）</label>
                                                         <div class="col-sm-10">
-                                                            <input class="form-control" type="text" style="width:200px;" placeholder="请填写11位手机号码"></input>
+                                                            <input name="phoneNum" class="form-control" type="text" style="width:200px;" placeholder="请填写11位手机号码"></input>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">地址（*）</label>
                                                         <div class="col-sm-10">
-                                                            <input class="form-control" type="text" style="width:400px;" placeholder="请填写11位手机号码"></input>
+                                                            <input name="address" class="form-control" type="text" style="width:400px;" placeholder="请填写正确的地址"></input>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                                                        <label class="col-sm-2 control-label"></label>
                                                         <div class="col-sm-10">
-                                                            <button type="button" class="btn btn-primary">确认配送信息</button>
+                                                            <button type="submit" class="btn btn-primary">确认配送信息</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -294,14 +291,15 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row clearfix">
-                                <div class="col-md-12 column">
+                                <div class="col-md-12 column" th:with="orderProjectVO=${session.orderProjectVO}">
                                     <blockquote style="border-left: 5px solid #f60;color:#f60;padding: 0 0 0 20px;">
                                         <b>
-                                            项目信息 <a style="font-size:12px;" href="pay-step-1.html">修改数量</a>
+                                            项目信息 <a style="font-size:12px;" th:href="@{/order/confirm/return/info/__${orderProjectVO.projectId}__/__${orderProjectVO.returnId}__}">修改数量
+                                        </a>
                                         </b>
                                     </blockquote>
                                 </div>
-                                <div class="col-md-12 column">
+                                <div class="col-md-12 column" th:with="orderProjectVO=${session.orderProjectVO}">
                                     <table class="table table-bordered" style="text-align:center;">
                                         <thead>
                                         <tr style="background-color:#ddd;">
@@ -315,12 +313,13 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>活性富氢净水直饮机</td>
-                                            <td>深圳市博实永道电子商务有限公司</td>
-                                            <td>每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</td>
-                                            <td>1</td>
-                                            <td style="color:#F60">￥ 1.00</td>
-                                            <td>免运费</td>
+                                            <td th:text="${orderProjectVO.projectName}">活性富氢净水直饮机</td>
+                                            <td th:text="${orderProjectVO.launchName}">深圳市博实永道电子商务有限公司</td>
+                                            <td th:text="${orderProjectVO.returnContent}">每满1750人抽取一台活性富氢净水直饮机，至少抽取一台。抽取名额（小数点后一位四舍五入）=参与人数÷1750人，由苏宁官方抽取。</td>
+                                            <td th:text="${orderProjectVO.returnCount}">1</td>
+                                            <td style="color:#F60">￥ [[${orderProjectVO.supportUnitPrice}]]</td>
+                                            <td th:if="${orderProjectVO.deliveryCharge == 0}">免运费</td>
+                                            <td th:if="${orderProjectVO.deliveryCharge != 0}" style="color:#F60">￥ [[${orderProjectVO.deliveryCharge}]]</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -343,11 +342,20 @@
 
                                 <div class="col-md-12 column">
                                     <div class="alert alert-warning alert-dismissable" style="text-align:right; border:2px solid #ffc287;">
-                                        <ul style="list-style:none;">
-                                            <li style="margin-top:10px;">支持金额：<span style="color:red;">￥1.00</span></li>
-                                            <li style="margin-top:10px;">配送费用：<span style="color:red;">￥0.00</span></li>
-                                            <li style="margin-top:10px;">优惠金额：<span style="color:red;">-￥0.00</span></li>
-                                            <li style="margin-top:10px;margin-bottom:10px;"><h2>支付总金额：<span style="color:red;">￥1.00</span></h2></li>
+                                        <ul style="list-style:none;" th:with="orderProjectVO=${session.orderProjectVO}">
+                                            <li style="margin-top:10px;">支持金额：
+                                                <span style="color:red;">￥
+                                                [[${orderProjectVO.returnCount * orderProjectVO.supportUnitPrice}]]
+                                                </span></li>
+                                            <li style="margin-top:10px;">配送费用：
+                                                <span style="color:red;">￥
+                                                [[${orderProjectVO.deliveryCharge}]]
+                                                </span></li>
+                                            <li style="margin-top:10px;margin-bottom:10px;"><h2>支付总金额：
+                                                <span style="color:red;">￥
+                                                [[${orderProjectVO.returnCount * orderProjectVO.supportUnitPrice + orderProjectVO.deliveryCharge}]]
+                                                </span></h2>
+                                            </li>
                                             <li style="margin-top:10px;padding:5px;border:1px solid #F00;display:initial;background:#FFF;">
                                                 <i class="glyphicon glyphicon-info-sign"></i> <strong>您需要先 <a href="#address">设置配送信息</a> ,再提交订单</strong>
                                             </li>
@@ -355,14 +363,14 @@
                                                 请在下单后15分钟内付款，否则您的订单会被自动关闭。
                                             </li>
                                             <li style="margin-top:10px;">
-                                                <button disabled="disabled" type="button" class="btn btn-warning btn-lg" onclick="window.location.href='pay-step-3.html'"><i
+                                                <button id="submitBtn" disabled="disabled" type="button" class="btn btn-warning btn-lg"><i
                                                         class="glyphicon glyphicon-credit-card"></i> 立即付款
                                                 </button>
                                             </li>
                                             <li style="margin-top:10px;">
                                                 <div class="checkbox">
                                                     <label>
-                                                        <input type="checkbox" checked> 我已了解风险和规则
+                                                        <input id="checkBox" type="checkbox"> 我已了解风险和规则
                                                     </label>
                                                 </div>
                                             </li>
@@ -426,6 +434,16 @@
     $('#myTab a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
+    });
+
+    $(function () {
+        $('#checkBox').change(function () {
+            if (this.checked) {
+                $('#submitBtn').prop('disabled', '');
+            } else {
+                $('#submitBtn').prop('disabled', 'disabled');
+            }
+        })
     })
 </script>
 </body>

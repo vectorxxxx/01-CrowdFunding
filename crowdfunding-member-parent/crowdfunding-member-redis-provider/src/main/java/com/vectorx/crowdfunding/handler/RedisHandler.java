@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class RedisHandler
 {
-    private Logger logger = LoggerFactory.getLogger(RedisHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisHandler.class);
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -32,7 +32,7 @@ public class RedisHandler
             return ResultEntity.successWithoutData();
         }
         catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return ResultEntity.failed(e.getMessage());
         }
     }
@@ -53,7 +53,7 @@ public class RedisHandler
             return ResultEntity.successWithoutData();
         }
         catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return ResultEntity.failed(e.getMessage());
         }
     }
@@ -68,7 +68,7 @@ public class RedisHandler
             return ResultEntity.successWithData(value);
         }
         catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return ResultEntity.failed(e.getMessage());
         }
     }
@@ -82,7 +82,7 @@ public class RedisHandler
             return ResultEntity.successWithoutData();
         }
         catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
             return ResultEntity.failed(e.getMessage());
         }
     }

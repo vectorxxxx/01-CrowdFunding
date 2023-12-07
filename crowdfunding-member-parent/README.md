@@ -111,6 +111,10 @@ alter table t_project
     modify money int null comment '筹集金额';
 alter table t_project
     modify deploydate varchar(19) null comment '项目发起时间';
+alter table t_member_launch_info
+    add project_id int null;
+alter table t_member_confirm_info
+    add project_id int null;
 ```
 
 ## 2、支付案例

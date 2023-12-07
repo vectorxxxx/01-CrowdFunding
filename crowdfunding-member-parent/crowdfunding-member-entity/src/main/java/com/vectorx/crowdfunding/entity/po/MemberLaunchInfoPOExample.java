@@ -3,8 +3,7 @@ package com.vectorx.crowdfunding.entity.po;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberLaunchInfoPOExample
-{
+public class MemberLaunchInfoPOExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -64,8 +63,7 @@ public class MemberLaunchInfoPOExample
         distinct = false;
     }
 
-    protected abstract static class GeneratedCriteria
-    {
+    protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
         protected GeneratedCriteria() {
@@ -296,76 +294,6 @@ public class MemberLaunchInfoPOExample
             return (Criteria) this;
         }
 
-        public Criteria andDescriptionDetailIsNull() {
-            addCriterion("description_detail is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailIsNotNull() {
-            addCriterion("description_detail is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailEqualTo(String value) {
-            addCriterion("description_detail =", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailNotEqualTo(String value) {
-            addCriterion("description_detail <>", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailGreaterThan(String value) {
-            addCriterion("description_detail >", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailGreaterThanOrEqualTo(String value) {
-            addCriterion("description_detail >=", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailLessThan(String value) {
-            addCriterion("description_detail <", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailLessThanOrEqualTo(String value) {
-            addCriterion("description_detail <=", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailLike(String value) {
-            addCriterion("description_detail like", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailNotLike(String value) {
-            addCriterion("description_detail not like", value, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailIn(List<String> values) {
-            addCriterion("description_detail in", values, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailNotIn(List<String> values) {
-            addCriterion("description_detail not in", values, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailBetween(String value1, String value2) {
-            addCriterion("description_detail between", value1, value2, "descriptionDetail");
-            return (Criteria) this;
-        }
-
-        public Criteria andDescriptionDetailNotBetween(String value1, String value2) {
-            addCriterion("description_detail not between", value1, value2, "descriptionDetail");
-            return (Criteria) this;
-        }
-
         public Criteria andPhoneNumIsNull() {
             addCriterion("phone_num is null");
             return (Criteria) this;
@@ -505,17 +433,75 @@ public class MemberLaunchInfoPOExample
             addCriterion("service_num not between", value1, value2, "serviceNum");
             return (Criteria) this;
         }
+
+        public Criteria andProjectIdIsNull() {
+            addCriterion("project_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIsNotNull() {
+            addCriterion("project_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdEqualTo(Integer value) {
+            addCriterion("project_id =", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotEqualTo(Integer value) {
+            addCriterion("project_id <>", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThan(Integer value) {
+            addCriterion("project_id >", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("project_id >=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThan(Integer value) {
+            addCriterion("project_id <", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdLessThanOrEqualTo(Integer value) {
+            addCriterion("project_id <=", value, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdIn(List<Integer> values) {
+            addCriterion("project_id in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotIn(List<Integer> values) {
+            addCriterion("project_id not in", values, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdBetween(Integer value1, Integer value2) {
+            addCriterion("project_id between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
     }
 
-    public static class Criteria extends GeneratedCriteria
-    {
+    public static class Criteria extends GeneratedCriteria {
         protected Criteria() {
             super();
         }
     }
 
-    public static class Criterion
-    {
+    public static class Criterion {
         private String condition;
 
         private Object value;
@@ -578,8 +564,7 @@ public class MemberLaunchInfoPOExample
             this.typeHandler = typeHandler;
             if (value instanceof List<?>) {
                 this.listValue = true;
-            }
-            else {
+            } else {
                 this.singleValue = true;
             }
         }

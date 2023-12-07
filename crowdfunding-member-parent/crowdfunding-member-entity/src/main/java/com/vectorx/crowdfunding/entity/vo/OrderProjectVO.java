@@ -13,7 +13,9 @@ public class OrderProjectVO implements Serializable
 {
     private static final long serialVersionUID = -8287139132973808762L;
 
-    private Integer id;
+    private Integer orderId;
+    private Integer projectId;
+    private Integer returnId;
 
     private String projectName;
 
@@ -26,8 +28,6 @@ public class OrderProjectVO implements Serializable
     private Integer supportUnitPrice;
 
     private Integer deliveryCharge;
-
-    private Integer orderId;
 
     // 是否限制单笔购买数量，0 表示不限购，1 表示限购
     private Integer signalPurchase;

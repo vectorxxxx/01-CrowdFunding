@@ -26,7 +26,7 @@ import java.util.List;
 @SpringBootTest
 public class MyBatisTest
 {
-    private Logger LOGGER = LoggerFactory.getLogger(MyBatisTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisTest.class);
 
     @Autowired
     private DataSource dataSource;

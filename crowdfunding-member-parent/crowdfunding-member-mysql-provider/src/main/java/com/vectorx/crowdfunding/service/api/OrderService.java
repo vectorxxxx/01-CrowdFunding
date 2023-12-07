@@ -7,8 +7,8 @@ public interface OrderService
     /**
      * 获取订单项目VO对象
      *
-     * @param projectId
-     * @param returnId
+     * @param projectId 项目ID
+     * @param returnId 回报ID
      * @return {@link OrderProjectVO}
      */
     OrderProjectVO getOrderProjectVO(Integer projectId, Integer returnId);

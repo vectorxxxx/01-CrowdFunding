@@ -1,6 +1,7 @@
 package com.vectorx.crowdfunding.service.api;
 
 import com.vectorx.crowdfunding.entity.vo.OrderProjectVO;
+import com.vectorx.crowdfunding.entity.vo.OrderVO;
 
 public interface OrderService
 {
@@ -12,4 +13,11 @@ public interface OrderService
      * @return {@link OrderProjectVO}
      */
     OrderProjectVO getOrderProjectVO(Integer projectId, Integer returnId);
+
+    /**
+     * 保存订单实体
+     *
+     * @param orderVO
+     */
+    void saveOrderVO(OrderVO orderVO);
 }

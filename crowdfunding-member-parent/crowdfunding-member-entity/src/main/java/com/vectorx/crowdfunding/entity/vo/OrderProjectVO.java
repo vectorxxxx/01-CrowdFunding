@@ -13,7 +13,6 @@ public class OrderProjectVO implements Serializable
 {
     private static final long serialVersionUID = -8287139132973808762L;
 
-    private Integer orderId;
     private Integer projectId;
     private Integer returnId;
 

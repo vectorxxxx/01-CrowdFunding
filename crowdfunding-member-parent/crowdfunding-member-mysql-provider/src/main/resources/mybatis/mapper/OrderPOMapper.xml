@@ -105,7 +105,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.vectorx.crowdfunding.entity.po.OrderPO">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.vectorx.crowdfunding.entity.po.OrderPO">
         insert into t_order (id, order_num, pay_order_num,
                              order_amount, invoice, Invoice_title,
                              order_remark, address_id)

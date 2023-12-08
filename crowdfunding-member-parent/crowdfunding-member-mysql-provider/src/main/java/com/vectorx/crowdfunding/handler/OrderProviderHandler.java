@@ -2,10 +2,12 @@ package com.vectorx.crowdfunding.handler;
 
 import com.vectorx.crowdfunding.entity.ResultEntity;
 import com.vectorx.crowdfunding.entity.vo.OrderProjectVO;
+import com.vectorx.crowdfunding.entity.vo.OrderVO;
 import com.vectorx.crowdfunding.service.api.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,26 @@ public class OrderProviderHandler
 
     @Autowired
     private OrderService orderService;
+
+    /**
+     * 保存订单实体
+     *
+     * @param orderVO
+     * @return {@link ResultEntity}<{@link String}>
+     */
+    @RequestMapping("/save/order/vo/remote")
+    public ResultEntity<String> saveOrderVORemote(
+            @RequestBody
+                    OrderVO orderVO) {
+        try {
+            orderService.saveOrderVO(orderVO);
+            return ResultEntity.successWithoutData();
+        }
+        catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return ResultEntity.failed(e.getMessage());
+        }
+    }
 
     /**
      * 获取订单项目数据

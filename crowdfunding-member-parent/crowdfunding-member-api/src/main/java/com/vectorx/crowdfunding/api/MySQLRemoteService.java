@@ -158,4 +158,15 @@ public interface MySQLRemoteService
     ResultEntity<String> saveAddressInfoRemote(
             @RequestBody
                     AddressVO addressVO);
+
+    /**
+     * 保存订单实体
+     *
+     * @param orderVO
+     * @return {@link ResultEntity}<{@link String}>
+     */
+    @RequestMapping("/save/order/vo/remote")
+    ResultEntity<String> saveOrderVORemote(
+            @RequestBody
+                    OrderVO orderVO);
 }

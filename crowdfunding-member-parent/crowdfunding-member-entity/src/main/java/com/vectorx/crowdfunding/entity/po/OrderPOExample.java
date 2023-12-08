@@ -174,33 +174,13 @@ public class OrderPOExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumEqualTo(Integer value) {
+        public Criteria andOrderNumEqualTo(String value) {
             addCriterion("order_num =", value, "orderNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumNotEqualTo(Integer value) {
+        public Criteria andOrderNumNotEqualTo(String value) {
             addCriterion("order_num <>", value, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumGreaterThan(Integer value) {
-            addCriterion("order_num >", value, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumGreaterThanOrEqualTo(Integer value) {
-            addCriterion("order_num >=", value, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumLessThan(Integer value) {
-            addCriterion("order_num <", value, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumLessThanOrEqualTo(Integer value) {
-            addCriterion("order_num <=", value, "orderNum");
             return (Criteria) this;
         }
 
@@ -211,16 +191,6 @@ public class OrderPOExample {
 
         public Criteria andOrderNumNotIn(List<Integer> values) {
             addCriterion("order_num not in", values, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumBetween(Integer value1, Integer value2) {
-            addCriterion("order_num between", value1, value2, "orderNum");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderNumNotBetween(Integer value1, Integer value2) {
-            addCriterion("order_num not between", value1, value2, "orderNum");
             return (Criteria) this;
         }
 

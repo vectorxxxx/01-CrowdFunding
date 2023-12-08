@@ -194,14 +194,14 @@
                                     <th:block th:if="${not #lists.isEmpty(session.addressVOList)}">
                                         <div class="radio" th:each="addressVO:${session.addressVOList}">
                                             <label>
-                                                <input type="radio" name="optionsRadios" th:value="${addressVO.id}">
+                                                <input type="radio" name="addressId" th:value="${addressVO.id}">
                                                 [[${addressVO.consigneeName}]] [[${addressVO.phoneNum}]] [[${addressVO.address}]]
                                             </label>
                                         </div>
                                     </th:block>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios" value="option2" th:checked="${#lists.isEmpty(session.addressVOList)}">
+                                            <input type="radio" th:checked="${#lists.isEmpty(session.addressVOList)}">
                                             新地址
                                         </label>
                                     </div>
@@ -257,13 +257,13 @@
                                 <div class="col-md-12 column" style="padding:0 120px;">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios1" id="optionsRadios1" value="option1" checked>
+                                            <input type="radio" name="invoice" value="0" checked>
                                             无需发票
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="optionsRadios1" id="optionsRadios2" value="option2">
+                                            <input type="radio" name="invoice" value="1">
                                             需要发票
                                         </label>
                                     </div>
@@ -279,7 +279,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">发票抬头（*）</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" style="width:200px;" placeholder="个人">
+                                                            <input type="text" name="invoiceTitle" class="form-control" style="width:200px;" placeholder="个人">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -328,7 +328,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">备注</label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control" rows="1" placeholder="填写关于回报或发起人希望您备注的信息"></textarea>
+                                            <textarea class="form-control" name="orderRemark" rows="1" placeholder="填写关于回报或发起人希望您备注的信息"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -424,12 +424,13 @@
             </div>
         </div>
     </div>
-
+    <form id="finalForm" th:action="@{/pay/generate/order}" method="post" style="display:none;"></form>
 </div> <!-- /container -->
 <script src="jquery/jquery-2.1.1.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="script/docs.min.js"></script>
 <script src="script/back-to-top.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
 <script>
     $('#myTab a').click(function (e) {
         e.preventDefault()
@@ -437,13 +438,37 @@
     });
 
     $(function () {
+        // 同意协议
         $('#checkBox').change(function () {
             if (this.checked) {
                 $('#submitBtn').prop('disabled', '');
             } else {
                 $('#submitBtn').prop('disabled', 'disabled');
             }
-        })
+        });
+        // 提交订单
+        $('#submitBtn').click(function () {
+            // 收集表单数据
+            let addressId = $('[name=addressId]:checked').val();
+            let invoice = $('[name=invoice]:checked').val();
+            let invoiceTitle = $('[name=invoiceTitle]').val();
+            let orderRemark = $('[name=orderRemark]').val();
+            if (!addressId) {
+                layer.msg('请选择收货地址');
+                return;
+            }
+            if (invoice === '1' && !invoiceTitle) {
+                layer.msg('请填写发票抬头');
+                return;
+            }
+            // 提交表单数据
+            $('#finalForm')
+                .append('<input type="hidden" name="addressId" value="' + addressId + '">')
+                .append('<input type="hidden" name="invoice" value="' + invoice + '">')
+                .append('<input type="hidden" name="invoiceTitle" value="' + invoiceTitle + '">')
+                .append('<input type="hidden" name="orderRemark" value="' + orderRemark + '">')
+                .submit();
+        });
     })
 </script>
 </body>

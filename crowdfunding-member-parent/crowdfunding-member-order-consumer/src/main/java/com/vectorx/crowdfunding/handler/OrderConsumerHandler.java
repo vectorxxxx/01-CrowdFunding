@@ -18,9 +18,6 @@ import java.util.List;
 @Controller
 public class OrderConsumerHandler
 {
-    private static final String ATTR_NAME_ORDER_PROJECT_VO = "orderProjectVO";
-    private static final String ATTR_NAME_ADDRESS_VO_LIST = "addressVOList";
-
     @Autowired
     private MySQLRemoteService mySQLRemoteService;
 
@@ -33,7 +30,7 @@ public class OrderConsumerHandler
         final ResultEntity<OrderProjectVO> orderProjectVOResultEntity = mySQLRemoteService.getOrderProjectDataRemote(projectId, returnId);
         if (ResultEntity.SUCCESS.equals(orderProjectVOResultEntity.getResult())) {
             final OrderProjectVO orderProjectVO = orderProjectVOResultEntity.getData();
-            session.setAttribute(ATTR_NAME_ORDER_PROJECT_VO, orderProjectVO);
+            session.setAttribute(CrowdConstant.ATTR_NAME_ORDER_PROJECT_VO, orderProjectVO);
         }
         return CrowdConstant.CONFIRM_RETURN;
     }
@@ -43,7 +40,7 @@ public class OrderConsumerHandler
             @PathVariable("returnCount")
                     Integer returnCount, HttpSession session, ModelMap modelMap) {
         // 查询session中的确认回报内容
-        final OrderProjectVO orderProjectVO = (OrderProjectVO) session.getAttribute(ATTR_NAME_ORDER_PROJECT_VO);
+        final OrderProjectVO orderProjectVO = (OrderProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_ORDER_PROJECT_VO);
         if (orderProjectVO == null) {
             modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MSG_CONFIRM_RETURN_MISSING);
             return CrowdConstant.CONFIRM_ORDER;
@@ -51,7 +48,7 @@ public class OrderConsumerHandler
 
         // 设置回报数量，并放回session域
         orderProjectVO.setReturnCount(returnCount);
-        session.setAttribute(ATTR_NAME_ORDER_PROJECT_VO, orderProjectVO);
+        session.setAttribute(CrowdConstant.ATTR_NAME_ORDER_PROJECT_VO, orderProjectVO);
 
         // 查询当前会员ID
         final MemberCenterVO memberCenterVO = (MemberCenterVO) session.getAttribute(CrowdConstant.ATTR_NAME_MEMBER);
@@ -60,7 +57,7 @@ public class OrderConsumerHandler
         // 查询地址信息
         ResultEntity<List<AddressVO>> addressVOListResultEntity = mySQLRemoteService.getAddressInfoByMemberIdRemote(memberId);
         if (ResultEntity.SUCCESS.equals(addressVOListResultEntity.getResult())) {
-            session.setAttribute(ATTR_NAME_ADDRESS_VO_LIST, addressVOListResultEntity.getData());
+            session.setAttribute(CrowdConstant.ATTR_NAME_ADDRESS_VO_LIST, addressVOListResultEntity.getData());
         }
 
         // 跳转确认订单页面
@@ -83,8 +80,12 @@ public class OrderConsumerHandler
         // 查询所有地址信息
         ResultEntity<List<AddressVO>> addressVOListResultEntity = mySQLRemoteService.getAddressInfoByMemberIdRemote(memberId);
         if (ResultEntity.SUCCESS.equals(addressVOListResultEntity.getResult())) {
-            session.setAttribute(ATTR_NAME_ADDRESS_VO_LIST, addressVOListResultEntity.getData());
+            session.setAttribute(CrowdConstant.ATTR_NAME_ADDRESS_VO_LIST, addressVOListResultEntity.getData());
         }
+
+        // 订单号
+        // 支付宝流水号
+        // 订单金额
 
         // 跳转确认订单页面
         return CrowdConstant.CONFIRM_ORDER;

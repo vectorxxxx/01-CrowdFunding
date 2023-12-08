@@ -1,13 +1,17 @@
 package com.vectorx.crowdfunding.entity.po;
 
-public class OrderPO {
+public class OrderPO
+{
     private Integer id;
 
-    private Integer orderNum;
+    // 订单号
+    private String orderNum;
 
-    private Integer payOrderNum;
+    // 支付宝流水号
+    private String payOrderNum;
 
-    private Integer orderAmount;
+    // 订单金额
+    private Long orderAmount;
 
     private Integer invoice;
 
@@ -25,27 +29,27 @@ public class OrderPO {
         this.id = id;
     }
 
-    public Integer getOrderNum() {
+    public String getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(Integer orderNum) {
+    public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
     }
 
-    public Integer getPayOrderNum() {
+    public String getPayOrderNum() {
         return payOrderNum;
     }
 
-    public void setPayOrderNum(Integer payOrderNum) {
+    public void setPayOrderNum(String payOrderNum) {
         this.payOrderNum = payOrderNum;
     }
 
-    public Integer getOrderAmount() {
+    public Long getOrderAmount() {
         return orderAmount;
     }
 
-    public void setOrderAmount(Integer orderAmount) {
+    public void setOrderAmount(Long orderAmount) {
         this.orderAmount = orderAmount;
     }
 

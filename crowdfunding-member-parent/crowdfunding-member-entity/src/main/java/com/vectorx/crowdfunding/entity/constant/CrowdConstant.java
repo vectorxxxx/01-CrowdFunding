@@ -69,5 +69,5 @@ public class CrowdConstant
     public static final String DO_LOGIN_OUT = "/auth/member/do/loginout";
     public static final String SEND_SHORT_MESSAGE = "/auth/member/send/short/message.json";
 
-    public static final String REDIRECT_HTTP_LOCALHOST = "redirect:http://localhost";
+    public static final String REDIRECT_HTTP_LOCALHOST = "redirect:http://139.196.215.65";
 }
